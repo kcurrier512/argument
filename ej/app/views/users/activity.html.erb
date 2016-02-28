@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<head>
+</head>
+<body>
+<div class="panel panel-default">
+  <div class="panel-heading"><h1 align="center">User Activity</h1></div>
+<table class="table" align="center">
+  <thead>
+    <tr>
+        <td><h3>Name</h3></td>
+        <td><h3>Assignment 1</h3></td>
+        <td><h3>Assignment 2</h3></td>
+        <td><h3>All Activity</h3></td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+
+      <tr>
+        <td><%= user.nickname %></td>
+        <td><%= link_to "View Activity", :controller => "users", :action =>"playback", :user_id => user.id, :assignment_id => 1 %></td>
+        <td><%= link_to "View Activity", :controller => "users", :action =>"playback", :user_id => user.id, :assignment_id => 2 %></td>
+        <td><%= link_to "View All Activity", :controller => "users", :action =>"playback", :user_id => user.id %></td>
+      </tr>
+
+    <% end %>
+  </tbody>
+</table>
+<div class="panel-footer"></div>
+</div>
+
+<br>
+
+</body>

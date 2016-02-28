@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'users/activity' => 'users#activity'
+  get 'users/playback' => 'users#playback'
   get 'evaluations/index'
   post 'evaluations/save_rankings'
   resources :evaluations do
@@ -20,7 +22,8 @@ Rails.application.routes.draw do
   get '/stats' => 'home#stats'
   get '/help' => 'home#help'
   get '/photojour' => 'home#photojour'
-  
+
+
 
   resources :posts do
     member do
@@ -28,12 +31,12 @@ Rails.application.routes.draw do
         post :flop
     end
   end
-  
-  
+
+
   root to:"home#index"
-  
+
   devise_for :users
-  resources :users, only: [:index]
+  resources :users, only: [:index, :activity]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
