@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
   has_many :assigned_positions
   has_many :positions, through: :assigned_positions
   has_many :evaluations
+  has_many :annotations
+  has_many :footnotes
+  has_many :tags
+  has_many :drafts
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

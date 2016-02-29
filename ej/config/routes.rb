@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :drafts
+  resources :tags
+  resources :footnotes
+  resources :annotations
   get 'evaluations/index'
   post 'evaluations/save_rankings'
   resources :evaluations do

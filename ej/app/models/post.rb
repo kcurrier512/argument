@@ -6,6 +6,8 @@ class Post < ActiveRecord::Base
     has_many :notes
     has_many :likes
     has_many :evaluations
+    has_many :annotations
+    has_many :drafts
 
 
     def peer_grade

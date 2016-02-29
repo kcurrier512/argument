@@ -1,0 +1,17 @@
+<%= form_for(@footnote) do |f| %>
+  <% if @footnote.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@footnote.errors.count, "error") %> prohibited this footnote from being saved:</h2>
+
+      <ul>
+      <% @footnote.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

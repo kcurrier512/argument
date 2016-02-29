@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160129203959) do
+ActiveRecord::Schema.define(version: 20160229003231) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.uuid     "visit_id",   limit: 16
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 20160129203959) do
   add_index "ahoy_events", ["time"], name: "index_ahoy_events_on_time", using: :btree
   add_index "ahoy_events", ["user_id"], name: "index_ahoy_events_on_user_id", using: :btree
   add_index "ahoy_events", ["visit_id"], name: "index_ahoy_events_on_visit_id", using: :btree
+
+  create_table "annotations", force: :cascade do |t|
+    t.text     "content",    limit: 65535
+    t.integer  "user_id",    limit: 4
+    t.integer  "post_id",    limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
   create_table "assigned_positions", force: :cascade do |t|
     t.integer  "user_id",     limit: 4
@@ -65,6 +73,15 @@ ActiveRecord::Schema.define(version: 20160129203959) do
     t.datetime "updated_at",               null: false
   end
 
+  create_table "drafts", force: :cascade do |t|
+    t.text     "content",    limit: 65535
+    t.string   "title",      limit: 255
+    t.integer  "post_id",    limit: 4
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
   create_table "evaluations", force: :cascade do |t|
     t.integer  "post_id",    limit: 4
     t.integer  "user_id",    limit: 4
@@ -79,6 +96,15 @@ ActiveRecord::Schema.define(version: 20160129203959) do
     t.boolean  "submitted",                default: false
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
+  end
+
+  create_table "footnotes", force: :cascade do |t|
+    t.text     "content",    limit: 65535
+    t.integer  "location",   limit: 4
+    t.integer  "draft_id",   limit: 4
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "groups", force: :cascade do |t|
@@ -127,6 +153,15 @@ ActiveRecord::Schema.define(version: 20160129203959) do
     t.boolean  "submitted",                   default: false
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "title",      limit: 255
+    t.integer  "draft_id",   limit: 4
+    t.integer  "comment_id", limit: 4
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "users", force: :cascade do |t|
