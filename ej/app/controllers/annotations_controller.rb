@@ -29,7 +29,7 @@ class AnnotationsController < ApplicationController
 
     respond_to do |format|
       if @annotation.save
-        format.html { redirect_to @annotation, notice: 'Annotation was successfully created.' }
+        format.html { redirect_to analyze_path(@annotation.post_id), notice: 'Annotation was successfully created.' }
         format.json { render :show, status: :created, location: @annotation }
       else
         format.html { render :new }
@@ -43,7 +43,7 @@ class AnnotationsController < ApplicationController
   def update
     respond_to do |format|
       if @annotation.update(annotation_params)
-        format.html { redirect_to @annotation, notice: 'Annotation was successfully updated.' }
+        format.html { redirect_to analyze_path(@annotation.post_id), notice: 'Annotation was successfully updated.' }
         format.json { render :show, status: :ok, location: @annotation }
       else
         format.html { render :edit }
