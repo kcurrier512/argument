@@ -69,7 +69,6 @@ class FootnotesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def footnote_params
-      #params.require(:footnote).permit(:content, :location, :draft_id, :user_id) 
-      params.permit(:content, :location, :draft_id, :user_id) 
+      params.require(:footnote).permit(:content, :location, :draft_id, :user_id) 
     end
 end

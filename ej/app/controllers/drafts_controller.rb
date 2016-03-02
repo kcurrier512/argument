@@ -69,7 +69,6 @@ class DraftsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def draft_params
-      #params.require(:draft).permit(:content, :title, :post_id, :user_id)
-      params.permit(:content, :title, :post_id, :user_id)
+      params.require(:draft).permit(:content, :title, :post_id, :user_id)
     end
 end
