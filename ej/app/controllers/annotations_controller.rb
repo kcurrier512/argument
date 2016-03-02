@@ -14,7 +14,8 @@ class AnnotationsController < ApplicationController
 
   # GET /annotations/new
   def new
-    @annotation = Annotation.new
+    @post = Post.find(params[:post_id])
+    @annotation = Annotation.new(post_id: @post.id)
   end
 
   # GET /annotations/1/edit
@@ -70,6 +71,6 @@ class AnnotationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def annotation_params
       # params.require(:annotation).permit(:content, :post_id, :user_id)
-      params.permit(:content, :post_id, :user_id)
+      params.require(:annotation).permit(:content, :post_id, :user_id)
     end
 end

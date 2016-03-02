@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="col-md-9">
+    <p id="notice"><%= notice %></p>
+
+<div class="page-header">
+  <h1><%= @post.headline %><small>                  by: <% if current_user.admin? %>
+                                                          <%= @post.user.name %>
+                                                        <% else %>
+                                                          <%= @post.user.nickname %>
+                                                        <% end %></small></h1>
+</div>
+<h4>Position: <% if @post.position.nil? %>
+            No position for this assignment
+            <% else %>
+            <%= @post.position.title %>
+            <% end %></h4>
+<br>
+<h4>First Draft</h4>
+<div class="well well-lg">
+    <%= @post.draft1 %>
+</div>
+<% if @post.draft2 != nil && @post.draft2.length > 0 %>
+    <h4>Final Draft</h4>
+    <div class="well well-lg">
+        <%= @post.draft2.html_safe %>
+    </div>
+<% end %>
+
+<div align="right">
+  <% if current_user.admin %>
+  	<% if @post.bookmarked %>
+  	  Bookmarked
+  	<% end %>
+  <%end%>
+
+
+  <% if @post.likes.count != nil %>
+    <h4>Likes: <%= @post.likes.count %></h4>
+  <% end %>
+</div>
+
+<div class="row">
+  <div class="col-sm-8">
+
+<h4>Comments</h4>
+
+<table class="table table-bordered">
+	<%@comments = @post.comments.order('created_at ASC')%>
+	<%@comments.each do |c|%>
+		<tr>
+			<td width="80%"><%=c.content.html_safe%></td>
+			<td width="20%" align="right">Commenter: <% if current_user.admin? %>
+			                                           <%=c.user.name%>
+			                                         <% else %>
+			                                           <%=c.user.nickname%>
+			                                         <% end %></td>
+		</tr>
+	<%end%>
+</table>
+</div>
+<div class="col-md-3">
+  <%= render  'annotate', :post_id => params[:id] %>
+</div>
+</div>

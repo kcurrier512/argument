@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+get 'posts/:id/analyze' => 'posts#analyze'
   resources :drafts
   resources :tags
   resources :footnotes
@@ -24,7 +25,7 @@ Rails.application.routes.draw do
   get '/stats' => 'home#stats'
   get '/help' => 'home#help'
   get '/photojour' => 'home#photojour'
-  
+
 
   resources :posts do
     member do
@@ -32,10 +33,10 @@ Rails.application.routes.draw do
         post :flop
     end
   end
-  
-  
+
+
   root to:"home#index"
-  
+
   devise_for :users
   resources :users, only: [:index]
   # The priority is based upon order of creation: first created -> highest priority.

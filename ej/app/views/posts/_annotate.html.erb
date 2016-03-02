@@ -1,0 +1,29 @@
+<% @post = Post.find(post_id)%>
+<%= @post.headline %>
+<div class="sidebar">
+  <h2>Comments</h2>
+  <% if @post.annotations.where(:user_id => current_user.id).exists? %>
+
+    <%=form_for(@post.annotations.where(:user_id => current_user.id).first) do |f|%>
+      <%=f.text_area :content %>
+      <%=f.submit "Save Comment" %>
+    <%end%>
+  <%else%>
+    <%=form_for(Annotation.new) do |f|%>
+      <%=f.text_area :content %>
+      <%=f.hidden_field :user_id, value: current_user.id %>
+      <%=f.hidden_field :post_id, value: @post.id %><br>
+      <%=f.submit "Save Comment" %>
+    <%end%>
+<% end %>
+
+  <h2>Footnotes</h2>
+
+
+  <h2>Data Analysis</h2>
+  <button class="btn btn-warning">Diff Function</button>
+  <button class="btn btn-warning">Word Count</button>
+  <button class="btn btn-warning">Print</button>
+  <button class="btn btn-warning">Compare Team</button>
+  <button class="btn btn-warning">Save as PDF</button>
+</div>
