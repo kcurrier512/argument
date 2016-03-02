@@ -1,7 +1,4 @@
 <div class="container">
-  <div class="col-md-9">
-    <p id="notice"><%= notice %></p>
-
 <div class="page-header">
   <h1><%= @post.headline %><small>                  by: <% if current_user.admin? %>
                                                           <%= @post.user.name %>
@@ -9,6 +6,11 @@
                                                           <%= @post.user.nickname %>
                                                         <% end %></small></h1>
 </div>
+<div class='row'>
+  <div class="col-md-9">
+    <p id="notice"><%= notice %></p>
+
+
 <h4>Position: <% if @post.position.nil? %>
             No position for this assignment
             <% else %>
@@ -39,9 +41,9 @@
   <% end %>
 </div>
 
-<div class="row">
+<!-- <div class="row">
   <div class="col-sm-8">
-
+ -->
 <h4>Comments</h4>
 
 <table class="table table-bordered">

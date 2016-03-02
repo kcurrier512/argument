@@ -1,5 +1,5 @@
 <% @post = Post.find(post_id)%>
-<%= @post.headline %>
+
 <div class="sidebar">
   <h2>Comments</h2>
   <% if @post.annotations.where(:user_id => current_user.id).exists? %>
