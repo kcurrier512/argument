@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
 get 'posts/:id/analyze' => 'posts#analyze'
   resources :drafts
-  resources :tags
   resources :footnotes
   resources :annotations
   get 'evaluations/index'

@@ -27,9 +27,10 @@ class PostsController < ApplicationController
       @final_draft=Draft.new(post_id:@post.id,content:@post.draft2,title:"final draft")
       @final_draft.save()
     else
-      @first_draft=Draft.first(post_id:@post.id,title:"first draft")
-      @final_draft=Draft.first(post_id:@post.id,title:"final draft")
+      @first_draft=Draft.where(post_id:@post.id,title:"first draft").first
+      @final_draft=Draft.where(post_id:@post.id,title:"final draft").first
     end
+
   end
 
   def annotate
