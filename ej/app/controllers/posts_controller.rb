@@ -21,6 +21,15 @@ class PostsController < ApplicationController
 
   def analyze
     @post = Post.find(params[:id])
+    if Draft.where(post_id:@post.id).empty?
+      @first_draft=Draft.new(post_id:@post.id,content:@post.draft1,title:"first draft")
+      @first_draft.save()
+      @final_draft=Draft.new(post_id:@post.id,content:@post.draft2,title:"final draft")
+      @final_draft.save()
+    else
+      @first_draft=Draft.first(post_id:@post.id,title:"first draft")
+      @final_draft=Draft.first(post_id:@post.id,title:"final draft")
+    end
   end
 
   def annotate

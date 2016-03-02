@@ -17,14 +17,14 @@
 <br>
 <h4>First Draft</h4>
 <div class="well well-lg">
-    <%= @post.draft1 %>
+    <%= @first_draft.content.html_safe %>
 </div>
-<% if @post.draft2 != nil && @post.draft2.length > 0 %>
+
     <h4>Final Draft</h4>
     <div class="well well-lg">
-        <%= @post.draft2.html_safe %>
+        <%= @final_draft.content.html_safe %>
     </div>
-<% end %>
+
 
 <div align="right">
   <% if current_user.admin %>

@@ -1,0 +1,2 @@
+class AnnotationSummaryController < ApplicationController
+end
