@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<head>
+</head>
+<body>
+<div class="panel panel-default">
+  <div class="panel-heading"><h1 align="center">User Activity</h1></div>
+
+ <!-- Partial view for activity snapshot -->
+
+ <table class="table" align="center">
+   <% @activity_ids.each do |a| %>
+     <tr><td><%= @nickname %> <%= a.name %></td></tr>
+   <% end %>
+ </table>
+
+
+<div class="panel-footer"></div>
+</div>
+
+<br>
+
+</body>

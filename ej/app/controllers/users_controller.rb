@@ -10,12 +10,16 @@ class UsersController < ApplicationController
 
   def playback
     @user = User.find(params[:user_id])
+    @nickname = @user.nickname
     # view activity for a specific assignment
-    if params[:assignment_id] != "0" then
+    if params[:assignment_id] != NIL then
       @assignment = Assignment.find(params[:assignment_id])
+      @activity_ids = Ahoy::Event.where(user_id: @user.id)
     else # view activity for all assignments
       @assignment = Assignment.all
+      @activity_ids = Ahoy::Event.where(user_id: @user.id)
     end
+
   end
 
 end

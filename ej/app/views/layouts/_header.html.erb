@@ -12,7 +12,7 @@
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-  <% if current_user != NIL %>  
+  <% if current_user != NIL %>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <% if current_user.admin? %>
@@ -22,6 +22,7 @@
           <li><%= link_to 'My Posts', posts_myposts_path %></li>
           <li><%= link_to 'My Evaluations', evaluations_path %></li>
         <% end %>
+        <li><%= link_to 'Analyze User Activity', users_activity_path %></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
@@ -37,10 +38,9 @@
     </div><!-- /.navbar-collapse -->
    <% end %>
   </div><!-- /.container-fluid -->
-  
+
 </nav>
 
 <!-- breadcrumbs go here -->
 <link rel="stylesheet" href ="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 <script src ="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-

@@ -6,16 +6,16 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
     User.create(name: 'Michelle', nickname: 'Michelle1', email: 'msisti@brandeis.edu', password: '12345678', admin: 'true')
-    User.create(name: 'Nishan', nickname: 'Nishan1', email: 'acharyan@brandeis.edu', password: '12345678', admin: 'true') 
-    User.create(name: 'Ken', nickname: 'Ken1',email: 'kharsch@brandeis.edu', password: '12345678', admin: 'true') 
+    User.create(name: 'Nishan', nickname: 'Nishan1', email: 'acharyan@brandeis.edu', password: '12345678', admin: 'true')
+    User.create(name: 'Ken', nickname: 'Ken1',email: 'kharsch@brandeis.edu', password: '12345678', admin: 'true')
 
-    User.create(name: 'JoeC', nickname: 'JoeC1', email: 'jcarter@brandeis.edu', password: '12345678') 
-    User.create(name: 'Kruk', nickname: 'Kruk1', email: 'jkruk@brandeis.edu', password: '12345678') 
-    User.create(name: 'Vida', nickname: 'Vida1', email: 'vblue@brandeis.edu', password: '12345678') 
-    User.create(name: 'Babe', nickname: 'Babe1', email: 'gruth@brandeis.edu', password: '12345678') 
-    User.create(name: 'Grover', nickname: 'Grover1', email: 'mhargrove@brandeis.edu', password: '12345678') 
-    User.create(name: 'Say Hey', nickname: 'Say Hey1', email: 'wmayes@brandeis.edu', password: '12345678') 
-   
+    User.create(name: 'JoeC', nickname: 'JoeC1', email: 'jcarter@brandeis.edu', password: '12345678')
+    User.create(name: 'Kruk', nickname: 'Kruk1', email: 'jkruk@brandeis.edu', password: '12345678')
+    User.create(name: 'Vida', nickname: 'Vida1', email: 'vblue@brandeis.edu', password: '12345678')
+    User.create(name: 'Babe', nickname: 'Babe1', email: 'gruth@brandeis.edu', password: '12345678')
+    User.create(name: 'Grover', nickname: 'Grover1', email: 'mhargrove@brandeis.edu', password: '12345678')
+    User.create(name: 'Say Hey', nickname: 'Say Hey1', email: 'wmayes@brandeis.edu', password: '12345678')
+
    Assignment.create(title: 'Assignment 1', description: 'Assignment 1 description', draft_deadline: '2016-01-30 05:00:00', final_deadline: '2016-01-31 05:00:00')
    Assignment.create(title: 'Assignment 2', description: 'Assignment 2 description', draft_deadline: '2016-02-15 05:00:00', final_deadline: '2016-02-17 05:00:00')
 
@@ -36,7 +36,7 @@
    Post.create(headline: 'Headline6', draft1: 'Draft 1-6', user_id: 6, assignment_id: 2)
    Post.create(headline: 'Headline7', draft1: 'Draft 1-7', user_id: 7, assignment_id: 2)
    Post.create(headline: 'Headline8', draft1: 'Draft 1-8', user_id: 8, assignment_id: 2)
-   
+
    Evaluation.create(post_id: 1, user_id: 4)
    Evaluation.create(post_id: 3, user_id: 4)
    Evaluation.create(post_id: 4, user_id: 4)
@@ -66,3 +66,5 @@
    Evaluation.create(post_id: 3, user_id: 8)
    Evaluation.create(post_id: 4, user_id: 8)
    Evaluation.create(post_id: 6, user_id: 8)
+
+   Ahoy::Event.create(user_id: 4, name: "Viewed a Post")
