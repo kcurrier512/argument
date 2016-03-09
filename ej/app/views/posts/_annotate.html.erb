@@ -21,25 +21,8 @@
 
 
   <h2>Data Analysis</h2>
-  <button class="btn btn-warning" data-toggle="modal" data-target="#DiffModal">Diff Function</button>
+  <a href="javascript: window.open('<%= diff_path(@post.id) %>', 'Diff Function', 'height=500, width=700')" class="btn btn-warning">Diff Function</a>
   <button class="btn btn-warning">Word Count</button>
   <button class="btn btn-warning">Print</button>
   <button class="btn btn-warning">Compare Team</button>
   <button class="btn btn-warning">Save as PDF</button>
-
-  <div id="DiffModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Differences between First and Final Drafts</h4>
-        </div>
-        <div class="modal-body">
-          <%= Diffy::Diff.new(@post.drafts.first.content, @post.drafts.last.content, :include_plus_and_minus_in_html => true).to_s(:html).html_safe %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#DiffModal">Close</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->

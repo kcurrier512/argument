@@ -30,10 +30,13 @@ class PostsController < ApplicationController
       @first_draft=Draft.where(post_id:@post.id,title:"first draft").first
       @final_draft=Draft.where(post_id:@post.id,title:"final draft").first
     end
-
   end
 
   def annotate
+    @post = Post.find(params[:id])
+  end
+
+  def diff
     @post = Post.find(params[:id])
   end
 

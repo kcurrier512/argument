@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
+  match 'posts/:id/diff' => 'posts#diff', as: 'diff', via: [:get, :post]
+  get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
   resources :drafts
   resources :footnotes
   resources :annotations
