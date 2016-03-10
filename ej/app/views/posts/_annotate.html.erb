@@ -3,7 +3,6 @@
 <div class="sidebar">
   <h2>Comments</h2>
   <% if @post.annotations.where(:user_id => current_user.id).exists? %>
-
     <%=form_for(@post.annotations.where(:user_id => current_user.id).first) do |f|%>
       <%=f.text_area :content %>
       <%=f.submit "Save Comment" %>
@@ -21,9 +20,8 @@
 
 
   <h2>Data Analysis</h2>
-  <button class="btn btn-warning">Diff Function</button>
+  <a href="javascript: window.open('<%= diff_path(@post.id) %>', 'Diff Function', 'height=500, width=700')" class="btn btn-warning">Diff Function</a>
   <button class="btn btn-warning">Word Count</button>
   <button class="btn btn-warning" onclick="window.print()">Print</button>
   <button class="btn btn-warning">Compare Team</button>
   <button class="btn btn-warning">Save as PDF</button>
-</div>

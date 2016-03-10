@@ -1,8 +1,14 @@
 Rails.application.routes.draw do
+<<<<<<< HEAD
 get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
   resources :drafts do
     get :autocomplete_tag_name, :on => :collection
   end
+=======
+  match 'posts/:id/diff' => 'posts#diff', as: 'diff', via: [:get, :post]
+  get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
+  resources :drafts
+>>>>>>> difffunction
   resources :footnotes
   resources :annotations
   get 'evaluations/index'
