@@ -10,7 +10,7 @@
 
 
 
-<div id='wrapper'>
+<div id='wrapper' class="toggled">
 
 	 <div id="sidebar-wrapper">
             <%= render 'layouts/sidenav'%>
@@ -29,6 +29,7 @@
 </div>
 </div>
 <script>
+
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
