@@ -1,5 +1,6 @@
 class DraftsController < ApplicationController
   before_action :set_draft, only: [:show, :edit, :update, :destroy]
+  autocomplete :tag, :name, :class_name => 'ActsAsTaggableOn::Tag'
 
   # GET /drafts
   # GET /drafts.json
@@ -28,7 +29,7 @@ class DraftsController < ApplicationController
 
     respond_to do |format|
       if @draft.save
-        format.html { redirect_to @draft, notice: 'Draft was successfully created.' }
+        format.html { redirect_to analyze_path(@draft.post_id), notice: 'Draft was successfully created.' }
         format.json { render :show, status: :created, location: @draft }
       else
         format.html { render :new }
@@ -42,7 +43,7 @@ class DraftsController < ApplicationController
   def update
     respond_to do |format|
       if @draft.update(draft_params)
-        format.html { redirect_to @draft, notice: 'Draft was successfully updated.' }
+        format.html { redirect_to analyze_path(@draft.post_id), notice: 'Draft was successfully updated.' }
         format.json { render :show, status: :ok, location: @draft }
       else
         format.html { render :edit }

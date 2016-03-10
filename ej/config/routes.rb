@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
-  resources :drafts
+  resources :drafts do
+    get :autocomplete_tag_name, :on => :collection
+  end
   resources :footnotes
   resources :annotations
   get 'evaluations/index'
@@ -26,7 +28,10 @@ get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
   get '/photojour' => 'home#photojour'
 
 
+
+
   resources :posts do
+
     member do
         get :flop
         post :flop

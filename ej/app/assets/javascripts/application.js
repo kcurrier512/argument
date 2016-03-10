@@ -19,6 +19,8 @@
 //= require bootstrap
 //= require ckeditor/init
 //= require nested_form_fields
+//= require autocomplete-rails
+
 //= require_tree .
 
 
