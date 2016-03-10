@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
-  
+
 
   # GET /posts
   # GET /posts.json
@@ -32,12 +32,11 @@ class PostsController < ApplicationController
       @first_draft=Draft.where(post_id:@post.id,title:"first draft").first
       @final_draft=Draft.where(post_id:@post.id,title:"final draft").first
     end
-<<<<<<< HEAD
+
 
   @tags = ActsAsTaggableOn::Tag.all()
 
-=======
->>>>>>> difffunction
+
   end
 
   def annotate
