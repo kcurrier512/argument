@@ -3,7 +3,6 @@
 <div class="sidebar">
   <h2>Comments</h2>
   <% if @post.annotations.where(:user_id => current_user.id).exists? %>
-
     <%=form_for(@post.annotations.where(:user_id => current_user.id).first) do |f|%>
       <%=f.text_area :content %>
       <%=f.submit "Save Comment" %>
