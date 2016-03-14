@@ -17,7 +17,30 @@
 <% end %>
 
   <h2>Footnotes</h2>
+  Create a Footnote:
+  <%= form_for(Footnote.new) do |form|%>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+    <%= form.radio_button(:draft_id, @post.drafts.first.id ) %>
+    <%= label_tag(:draft_id, "First Draft") %>
+    <%= form.radio_button(:draft_id, @post.drafts.last.id ) %>
+    <%= label_tag(:draft_id, "Final Draft") %>
+    <%= form.label :content, "Write your comment here, please:" %>
+    <%= form.text_area :content %>
+    <%= form.submit "Generate Footnote" %>
+  <% end %>
 
+  <h4>Footnotes for First Draft:</h4>
+  <ul>
+    <% Footnote.where(draft_id: @post.drafts.first.id, user_id: current_user.id).each do |goot| %>
+      <li><%= goot.content %> <%= link_to 'X', goot, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class:'btn btn-danger btn-xs' %> </li>
+    <% end %>
+  </ul>
+  <h4>Footnotes for Final Draft:</h4>
+  <ul>
+    <% Footnote.where(draft_id: @post.drafts.last.id, user_id: current_user.id).each do |goot| %>
+      <li><%= goot.content %> <%= link_to 'X', goot, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class:'btn btn-danger btn-xs' %> </li>
+    <% end %>
+  </ul>
 
   <h2>Data Analysis</h2>
   <a href="javascript: window.open('<%= diff_path(@post.id) %>', 'Diff Function', 'height=500, width=700')" class="btn btn-warning">Diff Function</a>

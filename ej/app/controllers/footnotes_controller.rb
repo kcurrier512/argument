@@ -28,7 +28,7 @@ class FootnotesController < ApplicationController
 
     respond_to do |format|
       if @footnote.save
-        format.html { redirect_to @footnote, notice: 'Footnote was successfully created.' }
+        format.html { redirect_to analyze_path(Post.find(Draft.find(@footnote.draft_id).post_id)), notice: 'Footnote was successfully created.' }
         format.json { render :show, status: :created, location: @footnote }
       else
         format.html { render :new }
@@ -56,7 +56,7 @@ class FootnotesController < ApplicationController
   def destroy
     @footnote.destroy
     respond_to do |format|
-      format.html { redirect_to footnotes_url, notice: 'Footnote was successfully destroyed.' }
+      format.html { redirect_to analyze_path(Post.find(Draft.find(@footnote.draft_id).post_id)), notice: 'Footnote was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -69,6 +69,6 @@ class FootnotesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def footnote_params
-      params.require(:footnote).permit(:content, :location, :draft_id, :user_id) 
+      params.require(:footnote).permit(:content, :location, :draft_id, :user_id)
     end
 end
