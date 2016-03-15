@@ -29,8 +29,12 @@ class DraftsController < ApplicationController
 
     respond_to do |format|
       if @draft.save
-        format.html { redirect_to analyze_path(@draft.post_id), notice: 'Draft was successfully created.' }
-        format.json { render :show, status: :created, location: @draft }
+        if !params.has_key?(:compare)
+          format.html { redirect_to analyze_path(@draft.post_id), notice: 'Tag added' }
+        else
+          format.html { redirect_to compare_path(@draft.post.assignment.id,params[:group],params[:member1],params[:member2]), notice: 'Tag added' }
+        end
+      
       else
         format.html { render :new }
         format.json { render json: @draft.errors, status: :unprocessable_entity }
@@ -43,8 +47,11 @@ class DraftsController < ApplicationController
   def update
     respond_to do |format|
       if @draft.update(draft_params)
-        format.html { redirect_to analyze_path(@draft.post_id), notice: 'Draft was successfully updated.' }
-        format.json { render :show, status: :ok, location: @draft }
+        if !params.has_key?(:compare)
+          format.html { redirect_to analyze_path(@draft.post_id), notice: 'Tag added' }
+        else
+          format.html { redirect_to compare_path(@draft.post.assignment.id,params[:group],params[:member1],params[:member2]), notice: 'Tag added' }
+        end
       else
         format.html { render :edit }
         format.json { render json: @draft.errors, status: :unprocessable_entity }

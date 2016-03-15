@@ -1,0 +1,112 @@
+<div class="container">
+<div class="page-header">
+ <h1>Team <%= @group.id %> - <%= @assignment.title %></h1>
+ <p>Members to compare:
+
+ <script type='text/javascript'>
+ $(function(){
+  $('#member1').change(function(){
+    var newLocation='<%= compare_path(@assignment.id,@group.id,'member1',@members[1].id) %>';
+    newLocation=newLocation.replace('member1',$(this).val());
+    window.location.replace(newLocation);
+  });
+  $('#member2').change(function(){
+    var newLocation='<%= compare_path(@assignment.id,@group.id,@members[0].id,'member2') %>';
+    newLocation=newLocation.replace('member2',$(this).val());
+    window.location.replace(newLocation);
+  });
+ });
+ </script>
+  <select id='member1'>
+    <% @group.users.each do |user| %>
+      <option value='<%= user.id %>' <% if @members[0].id==user.id %> <%= "selected" %> <% end %>><% if current_user.admin? %><%= user.name %><% else %><%= user.nickname %><% end %></option>
+    <% end %>
+  </select>
+  and
+  <select id='member2'>
+    <% @group.users.each do |user| %>
+      <option value='<%= user.id %>' <% if @members[1].id==user.id %> <%= "selected" %> <% end %>><% if current_user.admin? %><%= user.name %><% else %><%= user.nickname %><% end %></option>
+    <% end %>
+  </select>
+ </p>
+</div>
+<div class='row'>
+
+    <p id="notice"><%= notice %></p>
+
+
+
+ 
+<div class='row'>
+  <% for i in 0..1 %>
+  <div class='col-md-6'>
+  <h2><%= @posts[i].headline %><small>                  by: <% if current_user.admin? %>
+                                                          <%= @posts[i].user.name %>
+                                                        <% else %>
+                                                          <%= @posts[i].user.nickname %>
+                                                        <% end %></small></h2>
+    <h4>Position: <% if @posts[i].position.nil? %>
+                No position for this assignment
+                <% else %>
+                <%= @posts[i].position.title %>
+                <% end %></h4>
+    <br>
+    <h4>First Draft</h4>
+    <%= form_for(@first_drafts[i], :html=>{:class=>'form-inline'}) do |f| %>
+      <div class='form-group'>
+      <label>Tags: </label>
+      <%= hidden_field_tag :compare, "true"%>
+      <%= hidden_field_tag :member1, @members[0].id%>
+      <%= hidden_field_tag :member2, @members[1].id%>
+      <%= hidden_field_tag :group, @group.id%>
+      <%= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@first_drafts[i].tag_list.join(", ")  %>
+      </div>
+      <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
+    <% end %> 
+    <div class="well well-lg">
+        <%= @first_drafts[i].content.html_safe %>
+    </div>
+
+        <h4>Final Draft</h4>
+        <%= form_for(@final_drafts[i], :html=>{:class=>'form-inline'}) do |f| %>
+        <div class='form-group'>
+        <label>Tags: </label>
+        <%= hidden_field_tag :compare, "true"%>
+      <%= hidden_field_tag :member1, @members[0].id%>
+      <%= hidden_field_tag :member2, @members[1].id%>
+      <%= hidden_field_tag :group, @group.id%>
+        <%= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@final_drafts[i].tag_list.join(", ") %> 
+        </div>
+        <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
+    <% end %> 
+        <div class="well well-lg">
+            <%= @final_drafts[i].content.html_safe %>
+        </div>
+
+    
+
+  <h4>Comments</h4>
+
+  <table class="table table-bordered">
+  	<%@comments = @posts[i].comments.order('created_at ASC')%>
+  	<%@comments.each do |c|%>
+  		<tr>
+  			<td width="80%"><%=c.content.html_safe%></td>
+  			<td width="20%" align="right">Commenter: <% if current_user.admin? %>
+  			                                           <%=c.user.name%>
+  			                                         <% else %>
+  			                                           <%=c.user.nickname%>
+  			                                         <% end %></td>
+  		</tr>
+  	<%end%>
+  </table>
+  </div>
+  <% end %>
+
+</div>
+<div class="col-md-3">
+  <%
+  #= render  'annotate', :post_id => params[:id] 
+  %>
+</div>
+</div>

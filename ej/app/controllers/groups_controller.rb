@@ -11,6 +11,7 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.json
   def show
+
   end
 
   # GET /groups/new
@@ -40,6 +41,8 @@ class GroupsController < ApplicationController
       end
     end
   end
+
+  
 
   # PATCH/PUT /groups/1
   # PATCH/PUT /groups/1.json

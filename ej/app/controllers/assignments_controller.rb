@@ -63,6 +63,29 @@ class AssignmentsController < ApplicationController
     end
   end
 
+  def compare
+    @group = Group.find(params[:group_id])
+    @assignment = Assignment.find(params[:assignment_id])
+    @members=[User.find(params[:member1]),User.find(params[:member2])]
+
+    @posts=[]
+    @first_drafts=[]
+    @final_drafts=[]
+    for i in 0..1
+      @posts<<Post.where(assignment_id:@assignment.id,user_id:@members[i]).first
+      if Draft.where(post_id:@posts[i].id).empty?
+        @first_drafts<<Draft.new(post_id:@posts[i].id,content:@posts[i].draft1,title:"first draft")
+        @first_drafts[i].save()
+        @final_drafts[i]=Draft.new(post_id:@posts[i].id,content:@posts[i].draft2,title:"final draft")
+        @final_drafts[i].save()
+      else
+        @first_drafts[i]=Draft.where(post_id:@posts[i].id,title:"first draft").first
+        @final_drafts[i]=Draft.where(post_id:@posts[i].id,title:"final draft").first
+      end
+    end
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_assignment

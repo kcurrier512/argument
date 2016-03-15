@@ -5,6 +5,8 @@ get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
     get :autocomplete_tag_name, :on => :collection
   end
 
+  get 'assignments/:assignment_id/compare/:group_id/:member1/:member2' =>'assignments#compare', as: 'compare'
+
   match 'posts/:id/diff' => 'posts#diff', as: 'diff', via: [:get, :post]
 
   resources :footnotes
