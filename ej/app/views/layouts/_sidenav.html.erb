@@ -7,7 +7,7 @@
         <%= group_nav.item :group, "Group #{group.id}" do |post_nav|%>
           <% group.users.each do |user| %>
             <% @post = user.posts.where(assignment_id: assignment.id).first %>
-            <% post_nav.item :post, @post.headline, analyze_path(@post.id), highlights_on: /posts\/[0-9]+\/analyze/ %>
+            <% post_nav.item :post, @post.headline, analyze_path(@post.id), highlights_on: %r(/) %>
           <% end %>
         <% end %>
       <% end %>

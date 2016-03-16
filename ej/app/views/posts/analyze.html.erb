@@ -25,27 +25,25 @@
   </div>
   <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
 <% end %> 
-<div class="well well-lg" style= "margin-bottom: 5px">
-    <%= @first_draft.content.html_safe %>
+<div class="well well-lg draft" style= "margin-bottom: 5px" id="draft-<%=@first_draft.id%>"><%= @first_draft.content.html_safe %>
 </div>
 <div align="right">
   Word Count: <%= @first_draft.content.split.size %>
 </div>
 
-    <h4>Final Draft</h4>
-    <%= form_for(@final_draft, :html=>{:class=>'form-inline'}) do |f| %>
-    <div class='form-group'>
-    <label>Tags: </label>
-    <%= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@final_draft.tag_list.join(", ") %> 
-    </div>
-    <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
+<h4>Final Draft</h4>
+<%= form_for(@final_draft, :html=>{:class=>'form-inline'}) do |f| %>
+<div class='form-group'>
+<label>Tags: </label>
+<%= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@final_draft.tag_list.join(", ") %> 
+</div>
+<input type='submit' class='btn btn-primary btn-sm' value='save tags'>
 <% end %> 
-    <div class="well well-lg" style= "margin-bottom: 5px">
-        <%= @final_draft.content.html_safe %>
-    </div>
-    <div align="right">
-  Word Count: <%= @final_draft.content.split.size %>
-    </div>
+<div class="well well-lg draft" style= "margin-bottom: 5px" id="draft-<%=@final_draft.id%>"><%= @final_draft.content.html_safe %>
+</div>
+<div align="right">
+Word Count: <%= @final_draft.content.split.size %>
+</div>
 
 <h4>List of tags:</h4>
 <% if @tags.count > 0 %>

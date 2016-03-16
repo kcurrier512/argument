@@ -17,32 +17,82 @@
 <% end %>
 
   <h2>Footnotes</h2>
+  <div id="footnote_message">
+
+  </div>
   Create a Footnote:
   <%= form_for(Footnote.new) do |form|%>
     <%= form.hidden_field :user_id, value: current_user.id %>
-    <%= form.radio_button(:draft_id, @post.drafts.first.id ) %>
-    <%= label_tag(:draft_id, "First Draft") %>
-    <%= form.radio_button(:draft_id, @post.drafts.last.id ) %>
-    <%= label_tag(:draft_id, "Final Draft") %>
+    <%= form.hidden_field :location%>
+    <%= form.hidden_field :draft_id%>
     <%= form.label :content, "Write your comment here, please:" %>
     <%= form.text_area :content %>
     <%= form.submit "Generate Footnote" %>
   <% end %>
 
+  <button id="new_footnote_button" class="btn btn-info">Create a footnote</button>
   <h4>Footnotes for First Draft:</h4>
-  <ul>
-    <% Footnote.where(draft_id: @post.drafts.first.id, user_id: current_user.id).each do |goot| %>
+  <ol>
+    <% Footnote.where(draft_id: @post.drafts.first.id, user_id: current_user.id).order(:location).each do |goot| %>
       <li><%= goot.content %> <%= link_to 'X', goot, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class:'btn btn-danger btn-xs' %> </li>
     <% end %>
-  </ul>
+  </ol>
   <h4>Footnotes for Final Draft:</h4>
-  <ul>
-    <% Footnote.where(draft_id: @post.drafts.last.id, user_id: current_user.id).each do |goot| %>
+  <ol>
+    <% Footnote.where(draft_id: @post.drafts.last.id, user_id: current_user.id).order(:location).each do |goot| %>
       <li><%= goot.content %> <%= link_to 'X', goot, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class:'btn btn-danger btn-xs' %> </li>
     <% end %>
-  </ul>
+  </ol>
 
   <h2>Data Analysis</h2>
   <a href="javascript: window.open('<%= diff_path(@post.id) %>', 'Diff Function', 'height=500, width=700')" class="btn btn-warning">Diff Function</a>
   <button class="btn btn-warning" onclick="window.print()">Print</button>
   <button class="btn btn-warning">Compare Team</button>
+
+<script type="text/javascript">
+var loc, draft;
+function addFootnotes(footnotes_list, draft_id){
+  var div = $("#draft-" + draft_id);
+  var current_offset = 0;
+  var footnote_number = 1;
+  var new_tag;
+  var parts;
+  for(var i = 0; i < footnotes_list.length; i++){
+    console.log(div.html());
+    new_tag = "<sub>" + footnote_number + "</sub>";
+    parts = [div.html().slice(0, footnotes_list[i].location + current_offset), new_tag, div.html().slice(footnotes_list[i].location + current_offset, div.html().length)];
+    console.log(parts);
+    div.html(parts.join(""));
+    current_offset += new_tag.length;
+    footnote_number++;
+  }
+}
+var first_draft_footnotes = <%=Footnote.where(draft_id: @post.drafts.first.id, user_id: current_user.id).order(:location).to_json(:only => [:id, :location]).html_safe %>;
+var final_draft_footnotes = <%=Footnote.where(draft_id: @post.drafts.last.id, user_id: current_user.id).order(:location).to_json(:only => [:id, :location]).html_safe %>;
+$(function(){
+  addFootnotes(first_draft_footnotes, <%=@post.drafts.first.id%>);
+  addFootnotes(final_draft_footnotes, <%=@post.drafts.last.id%>);
+  $("#new_footnote_button").click(function(event){
+    event.preventDefault();
+    $("#footnote_message").html("Click footnote position");
+    $(".draft").attr("contenteditable", "true").click(function(){
+        loc = $(this).caret();
+        draft = $(this).attr("id").replace("draft-", "");
+        $(this).unbind("click").removeAttr("contenteditable");
+        $("#new_footnote_button").hide();
+        $("#new_footnote").show();
+        $("#footnote_message").hide();
+        $("#footnote_location").val(loc);
+        $("#footnote_draft_id").val(draft);
+
+      })
+  })
+  $("#new_footnote").hide();
+
+})
+
+
+</script>
+
+
+
