@@ -25,8 +25,11 @@
   </div>
   <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
 <% end %> 
-<div class="well well-lg">
+<div class="well well-lg" style= "margin-bottom: 5px">
     <%= @first_draft.content.html_safe %>
+</div>
+<div align="right">
+  Word Count: <%= @first_draft.content.split.size %>
 </div>
 
     <h4>Final Draft</h4>
@@ -37,8 +40,11 @@
     </div>
     <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
 <% end %> 
-    <div class="well well-lg">
+    <div class="well well-lg" style= "margin-bottom: 5px">
         <%= @final_draft.content.html_safe %>
+    </div>
+    <div align="right">
+  Word Count: <%= @final_draft.content.split.size %>
     </div>
 
 <h4>List of tags:</h4>

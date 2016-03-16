@@ -37,6 +37,7 @@ class PostsController < ApplicationController
   @tags = ActsAsTaggableOn::Tag.all()
 
 
+
   end
 
   def annotate
