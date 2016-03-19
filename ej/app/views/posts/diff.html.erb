@@ -2,3 +2,4 @@
 <div id="diff" class="well well-lg" >
   <%= Diffy::Diff.new(@post.drafts.first.content, @post.drafts.last.content, :include_plus_and_minus_in_html => true).to_s(:html).html_safe %>
 </div>
+<button class="btn btn-warning" onclick="window.print()">Print</button>
