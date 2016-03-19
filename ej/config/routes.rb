@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
 
+  resources :team_annotations
 get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
   resources :drafts do
     get :autocomplete_tag_name, :on => :collection
   end
 
-  get 'assignments/:assignment_id/compare/:group_id/:member1/:member2' =>'assignments#compare', as: 'compare'
+  match 'assignments/:assignment_id/compare/:group_id/:member1/:member2' =>'assignments#compare', as: 'compare', via: [:get, :post]
 
   match 'posts/:id/diff' => 'posts#diff', as: 'diff', via: [:get, :post]
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302215618) do
+ActiveRecord::Schema.define(version: 20160319163205) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.uuid     "visit_id",   limit: 16
@@ -174,6 +174,15 @@ ActiveRecord::Schema.define(version: 20160302215618) do
   end
 
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
+
+  create_table "team_annotations", force: :cascade do |t|
+    t.text     "content",       limit: 65535
+    t.integer  "user_id",       limit: 4
+    t.integer  "group_id",      limit: 4
+    t.integer  "assignment_id", limit: 4
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                   limit: 255, default: "",    null: false

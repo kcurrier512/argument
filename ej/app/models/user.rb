@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :positions, through: :assigned_positions
   has_many :evaluations
   has_many :annotations
+  has_many :team_annotations
   has_many :footnotes
   has_many :tags
   has_many :drafts
@@ -15,7 +16,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :rememberable, :trackable, :validatable
-      
+
     def delta (problem)
     @posts = Post.where(problemID: problem)
     @evaluations = Evaluation.where(user_id: self.id, :post_id => @posts).order('user_rank ASC')
@@ -40,5 +41,5 @@ class User < ActiveRecord::Base
     end
     return delta
   end
-   
+
 end

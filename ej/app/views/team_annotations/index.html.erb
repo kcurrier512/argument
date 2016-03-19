@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Team Annotations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @team_annotations.each do |team_annotation| %>
+      <tr>
+        <td><%= link_to 'Show', team_annotation %></td>
+        <td><%= link_to 'Edit', edit_team_annotation_path(team_annotation) %></td>
+        <td><%= link_to 'Destroy', team_annotation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Team annotation', new_team_annotation_path %>

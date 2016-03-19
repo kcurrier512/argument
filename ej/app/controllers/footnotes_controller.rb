@@ -28,8 +28,11 @@ class FootnotesController < ApplicationController
 
     respond_to do |format|
       if @footnote.save
-        format.html { redirect_to analyze_path(Post.find(Draft.find(@footnote.draft_id).post_id)), notice: 'Footnote was successfully created.' }
-        format.json { render :show, status: :created, location: @footnote }
+        if !params.has_key?(:compare)
+          format.html { redirect_to analyze_path(Post.find(Draft.find(@footnote.draft_id).post_id)), notice: 'Footnote was successfully created.' }
+        else
+          format.html { redirect_to compare_path(@footnote.draft.post.assignment.id, params[:group],params[:member1],params[:member2]), notice: 'Footnote was successfully created.' }
+        end
       else
         format.html { render :new }
         format.json { render json: @footnote.errors, status: :unprocessable_entity }
