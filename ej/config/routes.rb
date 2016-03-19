@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  get 'home/feedback' => 'home#feedback'
   resources :team_annotations
 get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
   resources :drafts do
