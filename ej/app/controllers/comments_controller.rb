@@ -7,6 +7,10 @@ class CommentsController < ApplicationController
     @comments = Comment.all
   end
 
+  def commentsnap
+    @post = Post.find(params[:post_id])
+    @comment = Comment.find(params[:id])
+  end
   # GET /comments/1
   # GET /comments/1.json
   def show

@@ -7,7 +7,7 @@ class PostsController < ApplicationController
     if current_user.admin?
       @assignment = Assignment.find(params[:assignment_id])
       @posts = Post.where(assignment_id: @assignment.id)
-    else 
+    else
       @assignment = Assignment.find(params[:assignment_id])
       @teammates = Array.new
       current_user.memberships.last.group.users.each do |u|
@@ -18,11 +18,15 @@ class PostsController < ApplicationController
       ahoy.track "Visited Assignments Page"
     end
   end
-  
+
+  def postsnap
+    @post = Post.find(params[:post_id])
+  end
+
   def inclass
     @posts = Post.where(bookmarked: true)
   end
-  
+
   def myposts
     if current_user.admin
       @user = User.find(params[:user_id])
@@ -32,7 +36,7 @@ class PostsController < ApplicationController
     ahoy.track "Visited My Post Page"
     end
   end
-  
+
   # GET /posts/1
   # GET /posts/1.json
   def show
@@ -69,20 +73,20 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    
+
     @post = Post.new(post_params)
-   
+
     if params[:commit] == 'Submit Post To Class'
       @post.submitted = true
       @post.draft2 = @post.draft1
-    else 
+    else
       @post.submitted = false
     end
 
     if current_user.assigned_positions.last
       @post.position_id = current_user.assigned_positions.last.position.id
     end
-    
+
     respond_to do |format|
       if @post.save
         format.html { redirect_to edit_post_path(@post), notice: 'Post was successfully created.' }
@@ -98,11 +102,11 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1.json
   def update
 
-    if params[:commit] == 'Submit Post To Class' 
+    if params[:commit] == 'Submit Post To Class'
       @post.submitted = true
       @post.draft2 = @post.draft1
     end
-   
+
 
     respond_to do |format|
       if @post.update(post_params)
@@ -124,7 +128,7 @@ class PostsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   def flop
     post = Post.find(params[:id])
     if !post.bookmarked

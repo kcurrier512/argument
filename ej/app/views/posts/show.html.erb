@@ -15,7 +15,7 @@
 <br>
 <h4>First Draft</h4>
 <div class="well well-lg">
-    <%= @post.draft1 %>
+    <%= @post.draft1.html_safe %>
 </div>
 <% if @post.draft2 != nil && @post.draft2.length > 0 %>
     <h4>Final Draft</h4>
@@ -32,8 +32,8 @@
   	  <%= button_to 'Bookmarked', flop_post_path(id: @post.id) %>
   	<% end %>
   <%end%>
-  
-  
+
+
   <% if @post.likes.count != nil %>
     <h4>Likes: <%= @post.likes.count %></h4>
   <% end %>
@@ -53,7 +53,7 @@
 
 <div class="row">
   <div class="col-sm-8">
-  	
+
 <h4>Comments</h4>
 
 <table class="table table-bordered">
@@ -95,4 +95,3 @@
 		<% end %>
   </div>
 </div>
-

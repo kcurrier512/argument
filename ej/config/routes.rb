@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'users/activity' => 'users#activity'
-  get 'users/playback' => 'users#playback'
+  match 'users/teamplay' => 'users#teamplay', via: [:get, :post]
+  match 'users/playback' => 'users#playback', via: [:get, :post]
   get 'evaluations/index'
   post 'evaluations/save_rankings'
   resources :evaluations do

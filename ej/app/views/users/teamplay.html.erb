@@ -4,13 +4,13 @@
 </head>
 <body>
 <div class="panel panel-default">
- <div class="panel-heading"><h1 align="center">User Activity Playback</h1></div>
+ <div class="panel-heading"><h1 align="center">Team Activity Playback</h1></div>
  <div class="row">
   <div class="col-sm-4">
     <table class="table" align="center">
      <!-- index var tracks the index of the activity array to compare against the current activity event -->
      <% index = 0 %>
-     <% @all_activity.each do |a| %>
+     <% @overall_activity.each do |a| %>
        <tr>
          <td>
            <!-- embolden the current activity item -->
@@ -18,7 +18,7 @@
              <b>
            <% end %>
 
-           <% if current_user.admin %><%= @user.name %><% else %><%= @user.nickname %><% end %>
+           <% if current_user.admin %><%= a.user.name %><% else %><%= a.user.nickname %><% end %>
            <!-- the activity item is an ahoy event -->
            <% if a.is_a?(Ahoy::Event) %>
              <%= a.name %>
@@ -61,15 +61,16 @@
     <center>
       <!-- if assignment exists, pass its ID; if not, do not pass an assignment param to view activity for all assignments -->
       <% if !@assignment.nil? %>
-        <%= button_to 'Back', users_playback_path(:user_id => @user.id, :i => @i.to_i - 1, :assignment_id => @assignment.id), form: {style: 'display:inline-block;'}, class: 'btn btn-info' %>
-        <%= button_to 'Forward', users_playback_path(:user_id => @user.id, :i => @i.to_i + 1, :assignment_id => @assignment.id), form: {style: 'display:inline-block;'}, class: 'btn btn-info' %>
+        <%= button_to 'Back', users_teamplay_path(:group_id => @group.id, :i => @i.to_i - 1, :assignment_id => @assignment.id), form: {style: 'display:inline-block;'}, class: 'btn btn-info' %>
+        <%= button_to 'Forward', users_teamplay_path(:group_id => @group.id, :i => @i.to_i + 1, :assignment_id => @assignment.id), form: {style: 'display:inline-block;'}, class: 'btn btn-info' %>
       <% else %>
-        <%= button_to 'Back', users_playback_path(:user_id => @user.id, :i => @i.to_i - 1), form: {style: 'display:inline-block;'}, class: 'btn btn-info' %>
-        <%= button_to 'Forward', users_playback_path(:user_id => @user.id, :i => @i.to_i + 1), form: {style: 'display:inline-block;'}, class: 'btn btn-info' %>
+        <%= button_to 'Back', users_teamplay_path(:group_id => @group.id, :i => @i.to_i - 1), form: {style: 'display:inline-block;'}, class: 'btn btn-info' %>
+        <%= button_to 'Forward', users_teamplay_path(:group_id => @group.id, :i => @i.to_i + 1), form: {style: 'display:inline-block;'}, class: 'btn btn-info' %>
       <% end %>
 
     </center>
     <!-- renders the partial for the current activity item's corresponding post, or an empty space if there is no corresponding post -->
+    <% @user = @overall_activity[@i.to_i].user %>
     <%= if !@gopost.nil? then render partial: "postsnap", object: @gopost, object: @user end %>
 
   </div>

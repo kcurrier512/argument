@@ -4,6 +4,36 @@
 </head>
 <body>
 <div class="panel panel-default">
+  <div class="panel-heading"><h1 align="center">Team Activity</h1></div>
+<table class="table" align="center">
+  <thead>
+    <tr>
+        <td><h3>Team Name</h3></td>
+        <td><h3>Assignment 1</h3></td>
+        <td><h3>Assignment 2</h3></td>
+        <td><h3>Assignment 3</h3></td>
+        <td><h3>All Activity</h3></td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @groups.each do |group| %>
+
+      <tr>
+        <td>Team <%= group.id %></td>
+        <td><%= link_to "View Activity", :controller => "users", :action =>"teamplay", :group_id => group.id, :assignment_id => 1 %></td>
+        <td><%= link_to "View Activity", :controller => "users", :action =>"teamplay", :group_id => group.id, :assignment_id => 2 %></td>
+        <td><%= link_to "View Activity", :controller => "users", :action =>"teamplay", :group_id => group.id, :assignment_id => 3 %></td>
+        <td><%= link_to "View All Activity", :controller => "users", :action =>"teamplay", :group_id => group.id %></td>
+      </tr>
+
+    <% end %>
+  </tbody>
+</table>
+<div class="panel-footer"></div>
+</div>
+
+<div class="panel panel-default">
   <div class="panel-heading"><h1 align="center">User Activity</h1></div>
 <table class="table" align="center">
   <thead>
