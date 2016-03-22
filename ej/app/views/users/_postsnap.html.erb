@@ -1,0 +1,52 @@
+<div class="page-header">
+  <h1><%= @gopost.headline %><small>                  by: <% if current_user.admin? %>
+                                                          <%= @gopost.user.name %>
+                                                        <% else %>
+                                                          <%= @gopost.user.nickname %>
+                                                        <% end %></small></h1>
+</div>
+<h4>Position: <% if @gopost.position.nil? %>
+            No position for this assignment
+            <% else %>
+            <%= @gopost.position.title %>
+            <% end %></h4>
+<br>
+
+<% if @gopost.draft1 != nil && @gopost.draft1.length > 0 %>
+  <h4>First Draft</h4>
+  <div class="well well-lg">
+    <%= @gopost.draft1.html_safe %>
+  </div>
+<% end %>
+<% if @gopost.draft2 != nil && @gopost.draft2.length > 0 %>
+    <h4>Final Draft</h4>
+    <div class="well well-lg">
+        <%= @gopost.draft2.html_safe %>
+    </div>
+<% end %>
+
+<% if @gopost.likes.count != nil %>
+  <h4>Likes: <%= @gopost.likes.count %></h4>
+  <h4>Notes:</h4>
+  <% if @gopost.notes.where(:user_id => @user.id).exists? %>
+    <div class="well well-sm"><%= @gopost.notes.where(:user_id => @user.id).exists? %></div>
+  <% else %>
+    User did not make notes on this post.
+  <% end %>
+<% end %>
+
+<h4>Comments</h4>
+
+<table class="table table-bordered">
+	<%@comments = @gopost.comments.order('created_at ASC')%>
+	<%@comments.each do |c|%>
+		<tr>
+			<td width="80%"><%=c.content.html_safe%></td>
+			<td width="20%" align="right">Commenter: <% if current_user.admin? %>
+			                                           <%=c.user.name%>
+			                                         <% else %>
+			                                           <%=c.user.nickname%>
+			                                         <% end %></td>
+		</tr>
+	<%end%>
+</table>

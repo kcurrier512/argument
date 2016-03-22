@@ -66,3 +66,5 @@
    Evaluation.create(post_id: 3, user_id: 8)
    Evaluation.create(post_id: 4, user_id: 8)
    Evaluation.create(post_id: 6, user_id: 8)
+
+   Ahoy::Event.create(user_id: 4, name: "Viewed a Post")

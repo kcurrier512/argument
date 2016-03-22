@@ -7,6 +7,11 @@ class NotesController < ApplicationController
     @notes = Note.all
   end
 
+  def notesnap
+    @post = Post.find(params[:post_id])
+    @note = Note.find(params[:id])
+  end
+
   # GET /notes/1
   # GET /notes/1.json
   def show

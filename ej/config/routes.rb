@@ -1,17 +1,19 @@
 Rails.application.routes.draw do
   get 'home/feedback' => 'home#feedback'
   resources :team_annotations
-get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
+  get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
   resources :drafts do
     get :autocomplete_tag_name, :on => :collection
   end
 
   match 'assignments/:assignment_id/compare/:group_id/:member1/:member2' =>'assignments#compare', as: 'compare', via: [:get, :post]
-
   match 'posts/:id/diff' => 'posts#diff', as: 'diff', via: [:get, :post]
 
   resources :footnotes
   resources :annotations
+  get 'users/activity' => 'users#activity'
+  match 'users/teamplay' => 'users#teamplay', via: [:get, :post]
+  match 'users/playback' => 'users#playback', via: [:get, :post]
   get 'evaluations/index'
   post 'evaluations/save_rankings'
   resources :evaluations do
@@ -34,9 +36,6 @@ get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
   get '/help' => 'home#help'
   get '/photojour' => 'home#photojour'
 
-
-
-
   resources :posts do
 
     member do
@@ -49,7 +48,7 @@ get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'
   root to:"home#index"
 
   devise_for :users
-  resources :users, only: [:index]
+  resources :users, only: [:index, :activity]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

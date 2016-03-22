@@ -1,6 +1,6 @@
 class Post < ActiveRecord::Base
-	belongs_to :user
-    belongs_to :assignment 
+		belongs_to :user
+    belongs_to :assignment
     belongs_to :position
     has_many :comments
     has_many :notes
@@ -17,7 +17,7 @@ class Post < ActiveRecord::Base
 
 	def pg_1
 		@evals = Evaluation.where(post_id: self.id)
-		i = 0 
+		i = 0
 		grade = 0.0
 			@evals.each do |eval|
 				unless eval.rating_1.nil?
@@ -31,7 +31,7 @@ class Post < ActiveRecord::Base
 	def pg_2
 		@evals = Evaluation.where(post_id: self.id)
 		@evals = Evaluation.where(post_id: self.id)
-		i = 0 
+		i = 0
 		grade = 0.0
 			@evals.each do |eval|
 				unless eval.rating_2.nil?
@@ -45,7 +45,7 @@ class Post < ActiveRecord::Base
 	def pg_3
 		@evals = Evaluation.where(post_id: self.id)
 		@evals = Evaluation.where(post_id: self.id)
-		i = 0 
+		i = 0
 		grade = 0.0
 			@evals.each do |eval|
 				unless eval.rating_3.nil?

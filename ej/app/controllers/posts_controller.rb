@@ -33,11 +33,7 @@ class PostsController < ApplicationController
       @final_draft=Draft.where(post_id:@post.id,title:"final draft").first
     end
 
-
-  @tags = ActsAsTaggableOn::Tag.all()
-
-
-
+    @tags = ActsAsTaggableOn::Tag.all()
   end
 
   def annotate
@@ -46,6 +42,9 @@ class PostsController < ApplicationController
 
   def diff
     @post = Post.find(params[:id])
+
+  def postsnap
+    @post = Post.find(params[:post_id])
   end
 
   def inclass
