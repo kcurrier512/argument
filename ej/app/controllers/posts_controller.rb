@@ -42,6 +42,7 @@ class PostsController < ApplicationController
 
   def diff
     @post = Post.find(params[:id])
+  end
 
   def postsnap
     @post = Post.find(params[:post_id])

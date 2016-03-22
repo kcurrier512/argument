@@ -47,7 +47,9 @@
   <h2>Data Analysis</h2>
   <a href="javascript: window.open('<%= diff_path(@post.id) %>', 'Diff Function', 'height=500, width=700')" class="btn btn-warning">Diff Function</a>
   <button class="btn btn-warning" onclick="window.print()">Print</button>
-  <%= button_to 'Compare Team', compare_path(:assignment_id => @post.assignment.id, :group_id => Membership.where(user_id: @post.user.id).first.group_id, :member1 => @post.user, :member2 => @post.user), class: 'btn btn-warning' %>
+  <% unless Membership.where(user_id: @post.user.id).first.nil? %>
+    <%= button_to 'Compare Team', compare_path(:assignment_id => @post.assignment.id, :group_id => Membership.where(user_id: @post.user.id).first.group_id, :member1 => @post.user, :member2 => @post.user), class: 'btn btn-warning' %>
+  <% end %>
 
 <script type="text/javascript">
 var loc, draft;
