@@ -1,12 +1,17 @@
 <p id="notice"><%= notice %></p>
 
 <head>
+  <style>
+    #activityList {
+      border-right: 1px solid #ccc;
+    }
+  </style>
 </head>
 <body>
 <div class="panel panel-default">
  <div class="panel-heading"><h1 align="center">Team Activity Playback</h1></div>
  <div class="row">
-  <div class="col-sm-4">
+  <div class="col-sm-4" id="activityList">
     <table class="table" align="center">
      <!-- index var tracks the index of the activity array to compare against the current activity event -->
      <% index = 0 %>
