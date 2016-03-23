@@ -23,14 +23,14 @@ class PostsController < ApplicationController
 
   def analyze
     @post = Post.find(params[:id])
-    if Draft.where(post_id:@post.id).empty?
-      @first_draft=Draft.new(post_id:@post.id,content:@post.draft1,title:"first draft")
+    if Draft.where(post_id:@post.id, user_id:current_user.id).empty?
+      @first_draft=Draft.new(post_id:@post.id,content:@post.draft1,title:"first draft",user_id:current_user.id)
       @first_draft.save()
-      @final_draft=Draft.new(post_id:@post.id,content:@post.draft2,title:"final draft")
+      @final_draft=Draft.new(post_id:@post.id,content:@post.draft2,title:"final draft", user_id:current_user.id)
       @final_draft.save()
     else
-      @first_draft=Draft.where(post_id:@post.id,title:"first draft").first
-      @final_draft=Draft.where(post_id:@post.id,title:"final draft").first
+      @first_draft=Draft.where(post_id:@post.id,title:"first draft", user_id:current_user.id).first
+      @final_draft=Draft.where(post_id:@post.id,title:"final draft", user_id:current_user.user_id).first
     end
 
     @tags = ActsAsTaggableOn::Tag.all()
