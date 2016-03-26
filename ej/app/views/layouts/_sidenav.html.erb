@@ -4,7 +4,7 @@
   <% Assignment.all.each do |assignment| %>
     <%= primary.item :assignment, assignment.title do |group_nav| %>
       <% Group.all.each do |group| %>
-        <%= group_nav.item :group, "Group #{group.id}" do |post_nav|%>
+        <%= group_nav.item :group, "Group #{group.id}", compare_path(:assignment_id => assignment.id, :group_id => group.id, :member1 => group.users.first, :member2 => group.users.last) do |post_nav|%>
           <% group.users.each do |user| %>
             <% @post = user.posts.where(assignment_id: assignment.id).first %>
             <% if !@post.nil? %>
