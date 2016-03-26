@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :pair_memberships
+  resources :pairs
   get 'home/feedback' => 'home#feedback'
   resources :team_annotations
   get 'posts/:id/analyze' => 'posts#analyze', as: 'analyze'

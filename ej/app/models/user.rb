@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   has_many :footnotes
   has_many :tags
   has_many :drafts
+  has_many :pair_memberships
+  has_many :pairs, through: :pair_memberships
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

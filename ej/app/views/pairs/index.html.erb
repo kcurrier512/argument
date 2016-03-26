@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Pairs</h1>
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>Pair Number</th>
+    <th>Pair Members</th>
+    <th>Edit</th>
+    <th>Destroy</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @pairs.each do |pair| %>
+      <tr>
+        <td style="font-family: TimesNewRoman, 'Times New Roman', Times, Baskerville, Georgia, serif;"><%= pair.id %></td>
+        <td style="font-family: TimesNewRoman, 'Times New Roman', Times, Baskerville, Georgia, serif;"><% pair.pair_memberships.each do |pair_membership| %>
+              <% if @u.include? pair_membership.user.name %>
+                  <div style="color:red;"><%= pair_membership.user.name %></div>
+              <% else %>
+                  <%= pair_membership.user.name %><br>
+                  <% @u << pair_membership.user.name %>
+              <% end %>
+          <% end %></td>
+        <td><%= link_to 'Edit', edit_pair_path(pair) %></td>
+        <td><%= link_to 'Destroy', pair, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Pair', new_pair_path %>

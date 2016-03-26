@@ -1,0 +1,27 @@
+<%= form_for(@pair) do |f| %>
+  <% if @pair.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@pair.errors.count, "error") %> prohibited this pair from being saved:</h2>
+
+      <ul>
+      <% @pair.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <%= f.nested_fields_for :pair_memberships do |pair_memberships_form| %>
+        <h4>Choose a user:</h4>
+        <%= pair_memberships_form.select :user_id, @users.all.collect {|u| [u.name, u.id]}%>
+        <%= pair_memberships_form.hidden_field :pair_id, value: @pair.id %>
+        <%= pair_memberships_form.remove_nested_fields_link 'Delete', class: 'btn btn-danger', role: 'button' %>
+        <br>
+    <% end %>
+    <%= f.add_nested_fields_link :pair_memberships, 'Add Another User', class: 'btn btn-primary', role: 'button' %>
+    <br>
+    <br>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+<% end %>

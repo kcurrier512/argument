@@ -17,6 +17,7 @@
       <ul class="nav navbar-nav">
         <% if current_user.admin? %>
         <li class="topbar-link"><%= link_to 'Groups', {:controller => 'groups', :action => 'index'} %></li>
+            <li class="topbar-link"><%= link_to 'Pairs', {:controller => 'pairs', :action => 'index'} %></li>
         <li class="topbar-link"><%= link_to 'Assign Positions', {:controller => 'assigned_positions', :action => 'index'} %></li>
         <% elsif !current_user.admin %>
           <li><%= link_to 'My Posts', posts_myposts_path %></li>
