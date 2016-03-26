@@ -71,17 +71,21 @@ class AssignmentsController < ApplicationController
     @posts=[]
     @first_drafts=[]
     @final_drafts=[]
+    @first_draft_footnotes=[]
+    @final_draft_footnotes=[]
     for i in 0..1
       @posts<<Post.where(assignment_id:@assignment.id,user_id:@members[i]).first
-      if Draft.where(post_id:@posts[i].id).empty?
-        @first_drafts<<Draft.new(post_id:@posts[i].id,content:@posts[i].draft1,title:"first draft")
+      if Draft.where(post_id:@posts[i].id,user_id:current_user.id).empty?
+        @first_drafts<<Draft.new(post_id:@posts[i].id,content:@posts[i].draft1,title:"first draft",user_id:current_user.id)
         @first_drafts[i].save()
-        @final_drafts[i]=Draft.new(post_id:@posts[i].id,content:@posts[i].draft2,title:"final draft")
+        @final_drafts[i]=Draft.new(post_id:@posts[i].id,content:@posts[i].draft2,title:"final draft",user_id:current_user.id)
         @final_drafts[i].save()
       else
-        @first_drafts[i]=Draft.where(post_id:@posts[i].id,title:"first draft").first
-        @final_drafts[i]=Draft.where(post_id:@posts[i].id,title:"final draft").first
+        @first_drafts[i]=Draft.where(post_id:@posts[i].id,title:"first draft",user_id:current_user.id).first
+        @final_drafts[i]=Draft.where(post_id:@posts[i].id,title:"final draft",user_id:current_user.id).first
       end
+       @first_draft_footnotes[i]=Footnote.where(draft_id: @first_drafts[i].id).order(:location)
+       @final_draft_footnotes[i]=Footnote.where(draft_id: @final_drafts[i].id).order(:location)
     end
 
   end

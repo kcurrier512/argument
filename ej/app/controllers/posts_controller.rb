@@ -30,7 +30,7 @@ class PostsController < ApplicationController
       @final_draft.save()
     else
       @first_draft=Draft.where(post_id:@post.id,title:"first draft", user_id:current_user.id).first
-      @final_draft=Draft.where(post_id:@post.id,title:"final draft", user_id:current_user.user_id).first
+      @final_draft=Draft.where(post_id:@post.id,title:"final draft", user_id:current_user.id).first
     end
 
     @tags = ActsAsTaggableOn::Tag.all()

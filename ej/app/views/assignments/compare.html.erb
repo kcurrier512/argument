@@ -99,13 +99,13 @@
 
   <h4>Footnotes for <%= @members[i].nickname %> for First Draft:</h4>
   <ol>
-    <% Footnote.where(draft_id: @first_drafts[i].id, user_id: current_user.id).order(:location).each do |goot| %>
+    <% @first_draft_footnotes[i].each do |goot| %>
       <li><%= goot.content %> <%= link_to 'X', goot, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class:'btn btn-danger btn-xs' %> </li>
     <% end %>
   </ol>
   <h4>Footnotes for <%= @members[i].nickname %> for Final Draft:</h4>
   <ol>
-    <% Footnote.where(draft_id: @final_drafts[i].id, user_id: current_user.id).order(:location).each do |goot| %>
+    <% @final_draft_footnotes[i].each do |goot| %>
       <li><%= goot.content %> <%= link_to 'X', goot, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class:'btn btn-danger btn-xs' %> </li>
     <% end %>
   </ol>
@@ -182,10 +182,10 @@ function addFootnotes(footnotes_list, draft_id){
     footnote_number++;
   }
 }
-var first_draft_footnotes1 = <%=Footnote.where(draft_id: @first_drafts[0].id, user_id: current_user.id).order(:location).to_json(:only => [:id, :location]).html_safe %>;
-var final_draft_footnotes1 = <%=Footnote.where(draft_id: @final_drafts[0].id, user_id: current_user.id).order(:location).to_json(:only => [:id, :location]).html_safe %>;
-var first_draft_footnotes2 = <%=Footnote.where(draft_id: @first_drafts[1].id, user_id: current_user.id).order(:location).to_json(:only => [:id, :location]).html_safe %>;
-var final_draft_footnotes2 = <%=Footnote.where(draft_id: @final_drafts[1].id, user_id: current_user.id).order(:location).to_json(:only => [:id, :location]).html_safe %>;
+var first_draft_footnotes1 = <%=@first_draft_footnotes[0].to_json(:only => [:id, :location, :user_id]).html_safe %>;
+var final_draft_footnotes1 = <%=@final_draft_footnotes[0].to_json(:only => [:id, :location, :user_id]).html_safe %>;
+var first_draft_footnotes2 = <%=@first_draft_footnotes[1].to_json(:only => [:id, :location, :user_id]).html_safe %>;
+var final_draft_footnotes2 = <%=@final_draft_footnotes[1].to_json(:only => [:id, :location, :user_id]).html_safe %>;
 $(function(){
   addFootnotes(first_draft_footnotes1, <%=@first_drafts[0].id%>);
   addFootnotes(final_draft_footnotes1, <%=@final_drafts[0].id%>);
