@@ -1,10 +1,12 @@
 <div class="container">
 <div class="page-header">
-  <h1><%= @post.headline %><small>                  by: <% if current_user.admin? %>
+  <h1><%= @post.headline %><small> by: <% if current_user.admin? %>
                                                           <%= @post.user.name %>
                                                         <% else %>
                                                           <%= @post.user.nickname %>
                                                         <% end %></small></h1>
+
+<label> <input type='checkbox' id='show-all-annotations'> Show tags and footnotes for whole team</label>
 </div>
 <div class='row'>
   <div class="col-md-9">
@@ -19,13 +21,23 @@
 <br>
 <h4>First Draft</h4>
 <%= form_for(@first_draft, :html=>{:class=>'form-inline'}) do |f| %>
+  <% @pair_members.each do |member| %>
+    <% if member.id!=current_user.id %>
+      <div class='form-group partner-tags'>
+      <label><%= member.name %>'s tags:</label>
+       <p class="form-control-static"><%= Draft.where(post_id:@post.id,title:"first draft", user_id:member.id).first.tag_list %>
+       </p>
+      </div>
+    <br>
+    <%end%>
+  <%end%>
   <div class='form-group'>
-  <label>Tags: </label>
+  <label>My tags: </label>
   <%= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@first_draft.tag_list.join(", ")  %>
   </div>
   <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
 <% end %> 
-<div class="well well-lg draft" style= "margin-bottom: 5px" id="draft-<%=@first_draft.id%>"><%= @first_draft.content.html_safe %>
+<div class="well well-lg draft" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style= "margin-bottom: 5px" id="draft-<%=@first_draft.id%>"><%= @first_draft.content.html_safe %>
 </div>
 <div align="right">
   Word Count: <%= @first_draft.content.split.size %>
@@ -33,13 +45,23 @@
 
 <h4>Final Draft</h4>
 <%= form_for(@final_draft, :html=>{:class=>'form-inline'}) do |f| %>
+<% @pair_members.each do |member| %>
+    <% if member.id!=current_user.id %>
+      <div class='form-group partner-tags'>
+      <label><%= member.name %>'s tags:</label>
+       <p class="form-control-static"><%= Draft.where(post_id:@post.id,title:"final draft", user_id:member.id).first.tag_list %>
+       </p>
+      </div>
+    <br>
+    <%end%>
+  <%end%>
 <div class='form-group'>
 <label>Tags: </label>
 <%= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@final_draft.tag_list.join(", ") %> 
 </div>
 <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
 <% end %> 
-<div class="well well-lg draft" style= "margin-bottom: 5px" id="draft-<%=@final_draft.id%>"><%= @final_draft.content.html_safe %>
+<div class="well well-lg draft" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style= "margin-bottom: 5px" id="draft-<%=@final_draft.id%>"><%= @final_draft.content.html_safe %>
 </div>
 <div align="right">
 Word Count: <%= @final_draft.content.split.size %>

@@ -33,6 +33,10 @@ class PostsController < ApplicationController
       @final_draft=Draft.where(post_id:@post.id,title:"final draft", user_id:current_user.id).first
     end
 
+    @pair=Pair.find(PairMembership.where(user_id: current_user.id).first.pair_id)
+
+    @pair_members=@pair.users
+
     @tags = ActsAsTaggableOn::Tag.all()
   end
 

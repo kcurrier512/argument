@@ -1,17 +1,29 @@
 <% @post = Post.find(post_id)
 
+@pair=Pair.find(PairMembership.where(user_id: current_user.id).first.pair_id)
+
+@pair_members=@pair.users
 
 
- @first_draft=Draft.where(post_id:@post.id,title:"first draft", user_id:current_user.id).first
- @final_draft=Draft.where(post_id:@post.id,title:"final draft", user_id:current_user.id).first
 
- first_draft_footnotes=Footnote.where(draft_id: @first_draft.id).order(:location)
- final_draft_footnotes=Footnote.where(draft_id: @final_draft.id).order(:location)
+@first_draft=Draft.where(post_id:@post.id,title:"first draft", user_id:current_user.id).first
+@final_draft=Draft.where(post_id:@post.id,title:"final draft", user_id:current_user.id).first
+
+@pair_first_drafts=Draft.where(:user_id => @pair_members.pluck(:id),post_id:@post.id,title:"first draft")
+@pair_final_drafts=Draft.where(:user_id => @pair_members.pluck(:id),post_id:@post.id,title:"final draft")
+
+
+
+first_draft_footnotes=Footnote.where(:draft_id => @pair_first_drafts.pluck(:id)).order(:location)
+final_draft_footnotes=Footnote.where(draft_id: @pair_final_drafts.pluck(:id)).order(:location)
 
 
 %>
 
+
+
 <div class="sidebar">
+
   <h2>Notes</h2>
   <% if @post.annotations.where(:user_id => current_user.id).exists? %>
     <%=form_for(@post.annotations.where(:user_id => current_user.id).first) do |f|%>
@@ -28,6 +40,8 @@
 <% end %>
 
   <h2>Footnotes</h2>
+  <ul id='member-list' class='list-unstyled'>
+  </ul>
   <div id="footnote_message">
 
   </div>
@@ -43,17 +57,9 @@
 
   <button id="new_footnote_button" class="btn btn-info">Create a footnote</button>
   <h4>Footnotes for First Draft:</h4>
-  <ol>
-    <% first_draft_footnotes.each do |goot| %>
-      <li><%= goot.content %> <%= link_to 'X', goot, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class:'btn btn-danger btn-xs' %> </li>
-    <% end %>
-  </ol>
+  <div id='first-draft-footnotes-list'></div>
   <h4>Footnotes for Final Draft:</h4>
-  <ol>
-    <% final_draft_footnotes.each do |goot| %>
-      <li><%= goot.content %> <%= link_to 'X', goot, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class:'btn btn-danger btn-xs' %> </li>
-    <% end %>
-  </ol>
+  <div id='final-draft-footnotes-list'></div>
 
   <h2>Data Analysis</h2>
   <a href="javascript: window.open('<%= diff_path(@post.id) %>', 'Diff Function', 'height=500, width=700')" class="btn btn-warning">Diff Function</a>
@@ -64,26 +70,135 @@
 
 <script type="text/javascript">
 var loc, draft;
-function addFootnotes(footnotes_list, draft_id){
+
+function add_footnotes_to_text(footnotes_list, draft_id){
   var div = $("#draft-" + draft_id);
   var current_offset = 0;
   var footnote_number = 1;
   var new_tag;
   var parts;
+  var current_footnote;
   for(var i = 0; i < footnotes_list.length; i++){
-    new_tag = "<sub>" + footnote_number + "</sub>";
+    current_footnote=footnotes_list[i];
+    new_tag = "<sub class='footnote footnote-user-"+current_footnote.user_id+"' style='color:"+pair_member_by_id(pair_members,current_footnote.user_id).color+"'>" + footnote_number + "</sub>";
     parts = [div.html().slice(0, footnotes_list[i].location + current_offset), new_tag, div.html().slice(footnotes_list[i].location + current_offset, div.html().length)];
-    console.log(parts);
     div.html(parts.join(""));
     current_offset += new_tag.length;
     footnote_number++;
   }
 }
-var first_draft_footnotes = <%=first_draft_footnotes.to_json(:only => [:id, :location, :user_id]).html_safe %>;
-var final_draft_footnotes = <%=final_draft_footnotes.to_json(:only => [:id, :location, :user_id]).html_safe %>;
+function list_footnotes_in_container(container, footnotes_list){
+  var current_footnote;
+  container.append("<ol></ol>");
+  for(var i=0; i<footnotes_list.length; i++){
+    current_footnote=footnotes_list[i];
+    container.children('ol').first().append("<li value='"+(i+1)+"' style='color:"+pair_member_by_id(pair_members,current_footnote.user_id).color+"' class='footnote footnote-user-"+current_footnote.user_id+"'>"+current_footnote.content+"</li>");
+  }
+}
+var first_draft_footnotes = <%=first_draft_footnotes.to_json(:only => [:id, :location, :content, :user_id]).html_safe %>;
+var final_draft_footnotes = <%=final_draft_footnotes.to_json(:only => [:id, :location, :content, :user_id]).html_safe %>;
+var pair_members = <%= @pair_members.to_json(:only=>[:name, :id]).html_safe %>;
+var possible_colors=['red','blue','green'];
+var current_color=0;
+var current_user_id=<%= current_user.id %>;
+for(var i=0; i<pair_members.length; i++){
+  current_member=pair_members[i];
+  current_member.color=possible_colors[current_color];
+  if(current_color<possible_colors.length){
+    current_color++;
+  }
+  else{
+    current_color=0;
+  }
+}
+
+function pair_member_by_id(members,id){
+  return $.grep(members, function(i){
+    return i.id==id;
+  })[0];
+}
+
+function show_all_footnotes(){
+  $('.footnote').show();
+}
+function show_my_footnotes(){
+  $('.footnote').hide();
+  $('.footnote-user-'+current_user_id).show();
+}
+
+function show_all_tags(){
+  $('.partner-tags').show();
+}
+
+function show_my_tags(){
+  $('.partner-tags').hide();
+}
+
+function show_all_annotations(){
+  show_all_footnotes();
+  show_all_tags();
+}
+
+function show_my_annotations(){
+  show_my_footnotes();
+  show_my_tags();
+}
+
+function list_members(target,members,after){
+  var current_member;
+  for(var member in members){
+      current_member=members[member];
+      target.append("<li style='color:"+current_member.color+"' class='footnote footnote-user-"+current_member.id+"'>"+current_member.name+after+"</li>");
+  }
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
+
 $(function(){
-  addFootnotes(first_draft_footnotes, <%=@first_draft.id%>);
-  addFootnotes(final_draft_footnotes, <%=@final_draft.id%>);
+  add_footnotes_to_text(first_draft_footnotes, <%=@first_draft.id%>);
+  add_footnotes_to_text(final_draft_footnotes, <%=@final_draft.id%>);
+
+  list_footnotes_in_container($('#first-draft-footnotes-list'),first_draft_footnotes);
+  list_footnotes_in_container($('#final-draft-footnotes-list'),final_draft_footnotes);
+
+  list_members($('#member-list'),pair_members,"'s footnotes");
+
+  if(getCookie('show-all-annotations')=="true"){
+    show_all_annotations();
+    $('#show-all-annotations').attr('checked',true);
+  }
+  else{
+    show_my_annotations();
+  }
+  
+
+  $('#show-all-annotations').change(function(){
+    if($(this).is(':checked')){
+      show_all_annotations();
+      setCookie('show-all-annotations','true',10);
+    }
+    else{
+      show_my_annotations();
+      setCookie('show-all-annotations','false',10);
+    }
+  })
+
   $("#new_footnote_button").click(function(event){
     event.preventDefault();
     $("#footnote_message").html("Click footnote position");
