@@ -25,7 +25,12 @@
     <% if member.id!=current_user.id %>
       <div class='form-group partner-tags'>
       <label><%= member.name %>'s tags:</label>
-       <p class="form-control-static"><%= Draft.where(post_id:@post.id,title:"first draft", user_id:member.id).first.tag_list %>
+       <p class="form-control-static"><%
+        member_draft=Draft.where(post_id:@post.id,title:"first draft", user_id:member.id)
+        unless member_draft.empty?
+        %>
+        <%= member_draft.first.tag_list %>
+        <%end%>
        </p>
       </div>
     <br>
@@ -49,7 +54,11 @@
     <% if member.id!=current_user.id %>
       <div class='form-group partner-tags'>
       <label><%= member.name %>'s tags:</label>
-       <p class="form-control-static"><%= Draft.where(post_id:@post.id,title:"final draft", user_id:member.id).first.tag_list %>
+       <p class="form-control-static"><%member_draft=Draft.where(post_id:@post.id,title:"first draft", user_id:member.id)
+        unless member_draft.empty?
+        %>
+        <%= member_draft.first.tag_list %>
+        <%end%>
        </p>
       </div>
     <br>

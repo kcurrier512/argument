@@ -58,7 +58,13 @@
       <% if member.id!=current_user.id %>
         <div class='form-group partner-tags'>
         <label><%= member.name %>'s tags:</label>
-         <p class="form-control-static"><%= Draft.where(post_id:@posts[i].id,title:"first draft", user_id:member.id).first.tag_list %>
+         <p class="form-control-static"><%
+
+         member_draft=Draft.where(post_id:@posts[i].id,title:"first draft", user_id:member.id)
+        unless member_draft.empty?
+        %>
+        <%= member_draft.first.tag_list %>
+        <%end%>
          </p>
         </div>
       <br>
@@ -84,7 +90,13 @@
       <% if member.id!=current_user.id %>
         <div class='form-group partner-tags'>
         <label><%= member.name %>'s tags:</label>
-         <p class="form-control-static"><%= Draft.where(post_id:@posts[i].id,title:"first draft", user_id:member.id).first.tag_list %>
+         <p class="form-control-static"><%
+
+         member_draft=Draft.where(post_id:@posts[i].id,title:"first draft", user_id:member.id)
+        unless member_draft.empty?
+        %>
+        <%= member_draft.first.tag_list %>
+        <%end%>
          </p>
         </div>
       <br>
@@ -269,11 +281,11 @@ function list_members(target,members,after){
   }
 }
 
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires;
+function setCookie(c_name, value, exdays) {
+    var exdate = new Date();  
+    exdate.setDate( exdate.getDate() + exdays );  
+    var c_value = escape( value ) + ( ( exdays == null ) ? "" : "; expires=" + exdate.toUTCString() );  
+    document.cookie = c_name + "=" + c_value + "; path=/"; 
 }
 
 function getCookie(cname) {
