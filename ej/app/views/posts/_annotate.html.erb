@@ -4,8 +4,6 @@
 
 @pair_members=@pair.users
 
-
-
 @first_draft=Draft.where(post_id:@post.id,title:"first draft", user_id:current_user.id).first
 @final_draft=Draft.where(post_id:@post.id,title:"final draft", user_id:current_user.id).first
 
@@ -14,8 +12,8 @@
 
 
 
-first_draft_footnotes=Footnote.where(:draft_id => @pair_first_drafts.pluck(:id)).order(:location)
-final_draft_footnotes=Footnote.where(draft_id: @pair_final_drafts.pluck(:id)).order(:location)
+@first_draft_footnotes=Footnote.where(:draft_id => @pair_first_drafts.pluck(:id)).order(:location)
+@final_draft_footnotes=Footnote.where(draft_id: @pair_final_drafts.pluck(:id)).order(:location)
 
 
 %>
@@ -95,8 +93,8 @@ function list_footnotes_in_container(container, footnotes_list){
     container.children('ol').first().append("<li value='"+(i+1)+"' style='color:"+pair_member_by_id(pair_members,current_footnote.user_id).color+"' class='footnote footnote-user-"+current_footnote.user_id+"'>"+current_footnote.content+"</li>");
   }
 }
-var first_draft_footnotes = <%=first_draft_footnotes.to_json(:only => [:id, :location, :content, :user_id]).html_safe %>;
-var final_draft_footnotes = <%=final_draft_footnotes.to_json(:only => [:id, :location, :content, :user_id]).html_safe %>;
+var first_draft_footnotes = <%=@first_draft_footnotes.to_json(:only => [:id, :location, :content, :user_id]).html_safe %>;
+var final_draft_footnotes = <%=@final_draft_footnotes.to_json(:only => [:id, :location, :content, :user_id]).html_safe %>;
 var pair_members = <%= @pair_members.to_json(:only=>[:name, :id]).html_safe %>;
 var possible_colors=['red','blue','green'];
 var current_color=0;

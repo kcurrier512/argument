@@ -57,7 +57,9 @@
   <%end%>
 <div class='form-group'>
 <label>Tags: </label>
-<%= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@final_draft.tag_list.join(", ") %> 
+<%#= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@final_draft.tag_list.join(", ")
+%> 
+<%= f.text_field :tag_list, :value=>@final_draft.tag_list.join(", ") %> 
 </div>
 <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
 <% end %> 
@@ -67,11 +69,11 @@
 Word Count: <%= @final_draft.content.split.size %>
 </div>
 
-<h4>List of tags:</h4>
+<h4>List of my tags:</h4>
 <% if @tags.count > 0 %>
   <ul>
     <% @tags.each do |tag| %>
-      <li><%= tag.name %></li>
+      <li><%= tag %></li>
     <% end %>
   </ul>
 <% else %>
@@ -92,10 +94,6 @@ Word Count: <%= @final_draft.content.split.size %>
 
 </div>
   
-
-<!-- <div class="row">
-  <div class="col-sm-8">
- -->
 <h4>Comments</h4>
 
 <table class="table table-bordered">

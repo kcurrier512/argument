@@ -68,11 +68,17 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @members=[User.find(params[:member1]),User.find(params[:member2])]
 
+    @pair=Pair.find(PairMembership.where(user_id: current_user.id).first.pair_id)
+
+    @pair_members=@pair.users
+
     @posts=[]
     @first_drafts=[]
     @final_drafts=[]
     @first_draft_footnotes=[]
     @final_draft_footnotes=[]
+    @pair_first_drafts=[]
+    @pair_final_drafts=[]
     for i in 0..1
       @posts<<Post.where(assignment_id:@assignment.id,user_id:@members[i]).first
       if Draft.where(post_id:@posts[i].id,user_id:current_user.id).empty?
@@ -84,8 +90,11 @@ class AssignmentsController < ApplicationController
         @first_drafts[i]=Draft.where(post_id:@posts[i].id,title:"first draft",user_id:current_user.id).first
         @final_drafts[i]=Draft.where(post_id:@posts[i].id,title:"final draft",user_id:current_user.id).first
       end
-       @first_draft_footnotes[i]=Footnote.where(draft_id: @first_drafts[i].id).order(:location)
-       @final_draft_footnotes[i]=Footnote.where(draft_id: @final_drafts[i].id).order(:location)
+       @pair_first_drafts[i]=Draft.where(:user_id => @pair_members.pluck(:id),post_id:@posts[i].id,title:"first draft")
+       @pair_final_drafts[i]=Draft.where(:user_id => @pair_members.pluck(:id),post_id:@posts[i].id,title:"final draft")
+
+       @first_draft_footnotes[i]=Footnote.where(:draft_id => @pair_first_drafts[i].pluck(:id)).order(:location)
+       @final_draft_footnotes[i]=Footnote.where(:draft_id => @pair_final_drafts[i].pluck(:id)).order(:location)
     end
 
   end

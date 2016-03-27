@@ -29,6 +29,7 @@
     <% end %>
   </select>
  </p>
+ <label> <input type='checkbox' id='show-all-annotations'> Show tags and footnotes for whole team</label>
 </div>
 <div class='row'>
 
@@ -53,13 +54,25 @@
     <br>
     <h4>First Draft</h4>
     <%= form_for(@first_drafts[i], :html=>{:class=>'form-inline'}) do |f| %>
+    <% @pair_members.each do |member| %>
+      <% if member.id!=current_user.id %>
+        <div class='form-group partner-tags'>
+        <label><%= member.name %>'s tags:</label>
+         <p class="form-control-static"><%= Draft.where(post_id:@posts[i].id,title:"first draft", user_id:member.id).first.tag_list %>
+         </p>
+        </div>
+      <br>
+      <%end%>
+    <%end%>
       <div class='form-group'>
-      <label>Tags: </label>
+      <label>My tags: </label>
       <%= hidden_field_tag :compare, "true"%>
       <%= hidden_field_tag :member1, @members[0].id%>
       <%= hidden_field_tag :member2, @members[1].id%>
       <%= hidden_field_tag :group, @group.id%>
-      <%= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@first_drafts[i].tag_list.join(", ")  %>
+      <%#= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@first_drafts[i].tag_list.join(", ") 
+      %>
+      <%= f.text_field :tag_list, :value=>@first_drafts[i].tag_list.join(", ")  %>
       </div>
       <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
     <% end %>
@@ -67,13 +80,25 @@
 
         <h4>Final Draft</h4>
         <%= form_for(@final_drafts[i], :html=>{:class=>'form-inline'}) do |f| %>
+        <% @pair_members.each do |member| %>
+      <% if member.id!=current_user.id %>
+        <div class='form-group partner-tags'>
+        <label><%= member.name %>'s tags:</label>
+         <p class="form-control-static"><%= Draft.where(post_id:@posts[i].id,title:"first draft", user_id:member.id).first.tag_list %>
+         </p>
+        </div>
+      <br>
+      <%end%>
+    <%end%>
         <div class='form-group'>
-        <label>Tags: </label>
+        <label>My tags: </label>
         <%= hidden_field_tag :compare, "true"%>
       <%= hidden_field_tag :member1, @members[0].id%>
       <%= hidden_field_tag :member2, @members[1].id%>
       <%= hidden_field_tag :group, @group.id%>
-        <%= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@final_drafts[i].tag_list.join(", ") %>
+        <%#= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@final_drafts[i].tag_list.join(", ") 
+        %>
+        <%= f.text_field :tag_list, :value=>@final_drafts[i].tag_list.join(", ") %>
         </div>
         <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
     <% end %>
@@ -98,17 +123,9 @@
   </table>
 
   <h4>Footnotes for <%= @members[i].nickname %> for First Draft:</h4>
-  <ol>
-    <% @first_draft_footnotes[i].each do |goot| %>
-      <li><%= goot.content %> <%= link_to 'X', goot, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class:'btn btn-danger btn-xs' %> </li>
-    <% end %>
-  </ol>
+  <div id='first-draft-footnotes-list-<%=i%>'></div>
   <h4>Footnotes for <%= @members[i].nickname %> for Final Draft:</h4>
-  <ol>
-    <% @final_draft_footnotes[i].each do |goot| %>
-      <li><%= goot.content %> <%= link_to 'X', goot, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class:'btn btn-danger btn-xs' %> </li>
-    <% end %>
-  </ol>
+  <div id='final-draft-footnotes-list-<%=i%>'></div>
   </div>
   <% end %>
 
@@ -138,6 +155,8 @@
 </div>
 <div class="col-md-3">
 <h2>Footnotes</h2>
+  <ul id='member-list' class='list-unstyled'>
+  </ul>
   <div id="footnote_message">
 
   </div>
@@ -166,31 +185,142 @@
 
 <script type="text/javascript">
 var loc, draft;
-function addFootnotes(footnotes_list, draft_id){
+function add_footnotes_to_text(footnotes_list, draft_id){
   var div = $("#draft-" + draft_id);
   var current_offset = 0;
   var footnote_number = 1;
   var new_tag;
   var parts;
+  var current_footnote;
   for(var i = 0; i < footnotes_list.length; i++){
-    console.log(div.html());
-    new_tag = "<sub>" + footnote_number + "</sub>";
+    current_footnote=footnotes_list[i];
+    new_tag = "<sub class='footnote footnote-user-"+current_footnote.user_id+"' style='color:"+pair_member_by_id(pair_members,current_footnote.user_id).color+"'>" + footnote_number + "</sub>";
     parts = [div.html().slice(0, footnotes_list[i].location + current_offset), new_tag, div.html().slice(footnotes_list[i].location + current_offset, div.html().length)];
-    console.log(parts);
     div.html(parts.join(""));
     current_offset += new_tag.length;
     footnote_number++;
   }
 }
-var first_draft_footnotes1 = <%=@first_draft_footnotes[0].to_json(:only => [:id, :location, :user_id]).html_safe %>;
-var final_draft_footnotes1 = <%=@final_draft_footnotes[0].to_json(:only => [:id, :location, :user_id]).html_safe %>;
-var first_draft_footnotes2 = <%=@first_draft_footnotes[1].to_json(:only => [:id, :location, :user_id]).html_safe %>;
-var final_draft_footnotes2 = <%=@final_draft_footnotes[1].to_json(:only => [:id, :location, :user_id]).html_safe %>;
+function list_footnotes_in_container(container, footnotes_list){
+  var current_footnote;
+  container.append("<ol></ol>");
+  for(var i=0; i<footnotes_list.length; i++){
+    current_footnote=footnotes_list[i];
+    container.children('ol').first().append("<li value='"+(i+1)+"' style='color:"+pair_member_by_id(pair_members,current_footnote.user_id).color+"' class='footnote footnote-user-"+current_footnote.user_id+"'>"+current_footnote.content+"</li>");
+  }
+}
+var first_draft_footnotes1 = <%=@first_draft_footnotes[0].to_json(:only => [:id, :location, :content, :user_id]).html_safe %>;
+var final_draft_footnotes1 = <%=@final_draft_footnotes[0].to_json(:only => [:id, :location, :content, :user_id]).html_safe %>;
+var first_draft_footnotes2 = <%=@first_draft_footnotes[1].to_json(:only => [:id, :location, :content, :user_id]).html_safe %>;
+var final_draft_footnotes2 = <%=@final_draft_footnotes[1].to_json(:only => [:id, :location, :content, :user_id]).html_safe %>;
+
+var pair_members = <%= @pair_members.to_json(:only=>[:name, :id]).html_safe %>;
+var possible_colors=['red','blue','green'];
+var current_color=0;
+var current_user_id=<%= current_user.id %>;
+for(var i=0; i<pair_members.length; i++){
+  current_member=pair_members[i];
+  current_member.color=possible_colors[current_color];
+  if(current_color<possible_colors.length){
+    current_color++;
+  }
+  else{
+    current_color=0;
+  }
+}
+
+function pair_member_by_id(members,id){
+  return $.grep(members, function(i){
+    return i.id==id;
+  })[0];
+}
+
+function show_all_footnotes(){
+  $('.footnote').show();
+}
+function show_my_footnotes(){
+  $('.footnote').hide();
+  $('.footnote-user-'+current_user_id).show();
+}
+
+function show_all_tags(){
+  $('.partner-tags').show();
+}
+
+function show_my_tags(){
+  $('.partner-tags').hide();
+}
+
+function show_all_annotations(){
+  show_all_footnotes();
+  show_all_tags();
+}
+
+function show_my_annotations(){
+  show_my_footnotes();
+  show_my_tags();
+}
+
+function list_members(target,members,after){
+  var current_member;
+  for(var member in members){
+      current_member=members[member];
+      target.append("<li style='color:"+current_member.color+"' class='footnote footnote-user-"+current_member.id+"'>"+current_member.name+after+"</li>");
+  }
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
+
+
 $(function(){
-  addFootnotes(first_draft_footnotes1, <%=@first_drafts[0].id%>);
-  addFootnotes(final_draft_footnotes1, <%=@final_drafts[0].id%>);
-  addFootnotes(first_draft_footnotes2, <%=@first_drafts[1].id%>);
-  addFootnotes(final_draft_footnotes2, <%=@final_drafts[1].id%>);
+  add_footnotes_to_text(first_draft_footnotes1, <%=@first_drafts[0].id%>);
+  add_footnotes_to_text(final_draft_footnotes1, <%=@final_drafts[0].id%>);
+  add_footnotes_to_text(first_draft_footnotes2, <%=@first_drafts[1].id%>);
+  add_footnotes_to_text(final_draft_footnotes2, <%=@final_drafts[1].id%>);
+
+  list_footnotes_in_container($('#first-draft-footnotes-list-0'),first_draft_footnotes1);
+  list_footnotes_in_container($('#final-draft-footnotes-list-0'),final_draft_footnotes1);
+  list_footnotes_in_container($('#first-draft-footnotes-list-1'),first_draft_footnotes2);
+  list_footnotes_in_container($('#final-draft-footnotes-list-1'),final_draft_footnotes2);
+
+  list_members($('#member-list'),pair_members,"'s footnotes");
+
+  if(getCookie('show-all-annotations')=="true"){
+    show_all_annotations();
+    $('#show-all-annotations').attr('checked',true);
+  }
+  else{
+    show_my_annotations();
+  }
+  
+
+  $('#show-all-annotations').change(function(){
+    if($(this).is(':checked')){
+      show_all_annotations();
+      setCookie('show-all-annotations','true',10);
+    }
+    else{
+      show_my_annotations();
+      setCookie('show-all-annotations','false',10);
+    }
+  })
+
   $("#new_footnote_button").click(function(event){
     event.preventDefault();
     $("#footnote_message").html("Click footnote position");

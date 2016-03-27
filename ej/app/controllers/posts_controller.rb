@@ -37,7 +37,8 @@ class PostsController < ApplicationController
 
     @pair_members=@pair.users
 
-    @tags = ActsAsTaggableOn::Tag.all()
+    @tags = @first_draft.tag_list.to_a + @final_draft.tag_list.to_a
+    @tags=@tags.uniq
   end
 
   def annotate
