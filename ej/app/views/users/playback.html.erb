@@ -51,11 +51,19 @@
              wrote a note for "<%= Post.find(a.post_id).headline %>" at <%= a.created_at %></td>
              <td><%= link_to 'Go to Post', analyze_path(a.post_id) %></td>
            <% end %>
-
          <!-- embolden the current activity item -->
          <% if @i.to_i == index %>
            </b>
          <% end %>
+
+         <!-- button that allows user to jump to activity item they wish to view in the partial -->
+         <td>
+           <% if !@assignment.nil? %>
+             <%= button_to 'View Event', users_playback_path(:user_id => @user.id, :i => index, :assignment_id => @assignment.id) %>
+           <% else %>
+             <%= button_to 'View Event', users_playback_path(:user_id => @user.id, :i => index) %>
+           <% end %>
+         </td>
 
          <% index += 1 %>
        </tr>
