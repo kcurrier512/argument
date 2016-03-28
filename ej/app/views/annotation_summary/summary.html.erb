@@ -1,0 +1,27 @@
+<div class="panel panel-default">
+ <div class="panel-heading"><h1 align="center">Pair's Annotation Summary</h1></div>
+ <table class="table" align="center">
+  <!-- index var tracks the index of the activity array to compare against the current activity event -->
+  <% index = 1 %>
+  <% @overall_activity.each do |a| %>
+    <tr>
+      <td>
+        <%= index %>. <% if current_user.admin %><%= a.user.name %><% else %><%= a.user.nickname %><% end %>
+        <% if a.is_a?(Annotation) %>
+          wrote an annotation on a post titled "<%= Post.find(a.post_id).headline %>" at <%= a.created_at %></td>
+          <td>Content: <%= a.content %></td>
+          <td><%= link_to 'Go to Analyzed Post', analyze_path(a.post_id) %></td>
+        <% elsif a.is_a?(TeamAnnotation) %>
+          wrote a comparison annotation for a team's posts at <%= a.created_at %></td>
+          <td>Content: <%= a.content %></td>
+          <td><%= link_to 'Go to Comparison', analyze_path(a.post_id) %></td>
+        <% elsif a.is_a?(Footnote) %>
+          wrote a footnote for a post titled "<%= Post.find(Draft.find(a.draft_id).post_id).headline %>" at <%= a.created_at %></td>
+          <td>Content: <%= a.content %></td>
+          <td><%= link_to 'Go to Analyzed Post', analyze_path(Draft.find(a.draft_id).post_id) %></td>
+        <% end %>
+        <% index += 1 %>
+    </tr>
+  <% end %>
+ </table>
+</div>

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'annotation_summary/index' => 'annotation_summary#index'
+  match 'annotation_summary/summary' => 'annotation_summary#summary', as: 'summary', via: [:get, :post]
   resources :pair_memberships
   resources :pairs
   get 'home/feedback' => 'home#feedback'

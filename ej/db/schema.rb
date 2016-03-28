@@ -143,9 +143,8 @@ ActiveRecord::Schema.define(version: 20160326174911) do
   end
 
   create_table "pairs", force: :cascade do |t|
-    t.integer  "user_id",    limit: 4
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "positions", force: :cascade do |t|

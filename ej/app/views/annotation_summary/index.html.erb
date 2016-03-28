@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<head>
+</head>
+<body>
+<div class="panel panel-default">
+  <div class="panel-heading"><h1 align="center">View Pair's Annotation Activity</h1></div>
+    <center>
+      <br>
+      Select which assignment you would like to view your pair's annotation activity for.
+      <br><br>
+      <%= button_to 'Assignment 1', {:controller => 'annotation_summary', :action => 'summary', :assignment_id => 1}, form: {style: 'display:inline-block;'}, class: 'btn btn-info btn-lg' %>
+      <%= button_to 'Assignment 2', {:controller => 'annotation_summary', :action => 'summary', :assignment_id => 2}, form: {style: 'display:inline-block;'}, class: 'btn btn-info btn-lg' %>
+      <%= button_to 'Assignment 3', {:controller => 'annotation_summary', :action => 'summary', :assignment_id => 3}, form: {style: 'display:inline-block;'}, class: 'btn btn-info btn-lg' %>
+      <%= button_to 'All Assignments', {:controller => 'annotation_summary', :action => 'summary'}, form: {style: 'display:inline-block;'}, class: 'btn btn-info btn-lg' %>
+      <br><br>
+    </center>
+  <div class="panel-footer"></div>
+</div>
