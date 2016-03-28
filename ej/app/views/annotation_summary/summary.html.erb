@@ -1,3 +1,4 @@
+<% if !PairMembership.where(user_id: current_user.id).first.nil? %>
 <div class="panel panel-default">
  <div class="panel-heading"><h1 align="center">Pair's Annotation Summary</h1></div>
  <table class="table" align="center">
@@ -25,3 +26,6 @@
   <% end %>
  </table>
 </div>
+<% else %>
+You do not belong to an analysis pair, so there is nothing to see here.
+<% end %>

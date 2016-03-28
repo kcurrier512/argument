@@ -28,7 +28,7 @@ class TeamAnnotationsController < ApplicationController
 
     respond_to do |format|
       if @team_annotation.save
-        format.html { redirect_to @team_annotation, notice: 'Team annotation was successfully created.' }
+        format.html { redirect_to compare_path(@team_annotation.assignment_id, @team_annotation.group_id, params[:member1], params[:member2]), notice: 'Team annotation was successfully created.' }
         format.json { render :show, status: :created, location: @team_annotation }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class TeamAnnotationsController < ApplicationController
   def update
     respond_to do |format|
       if @team_annotation.update(team_annotation_params)
-        format.html { redirect_to @team_annotation, notice: 'Team annotation was successfully updated.' }
+        format.html { redirect_to compare_path(@team_annotation.assignment_id, @team_annotation.group_id, params[:member1], params[:member2]), notice: 'Team annotation was successfully updated.' }
         format.json { render :show, status: :ok, location: @team_annotation }
       else
         format.html { render :edit }

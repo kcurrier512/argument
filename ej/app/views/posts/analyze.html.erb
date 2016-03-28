@@ -41,12 +41,14 @@
   <%= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@first_draft.tag_list.join(", ")  %>
   </div>
   <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
-<% end %> 
+<% end %>
+<% if !@first_draft.content.nil? %>
 <div class="well well-lg draft" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style= "margin-bottom: 5px" id="draft-<%=@first_draft.id%>"><%= @first_draft.content.html_safe %>
 </div>
 <div align="right">
   Word Count: <%= @first_draft.content.split.size %>
 </div>
+<% end %>
 
 <h4>Final Draft</h4>
 <%= form_for(@final_draft, :html=>{:class=>'form-inline'}) do |f| %>
@@ -67,16 +69,18 @@
 <div class='form-group'>
 <label>Tags: </label>
 <%#= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@final_draft.tag_list.join(", ")
-%> 
-<%= f.text_field :tag_list, :value=>@final_draft.tag_list.join(", ") %> 
+%>
+<%= f.text_field :tag_list, :value=>@final_draft.tag_list.join(", ") %>
 </div>
 <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
-<% end %> 
+<% end %>
+<% if !@final_draft.content.nil? %>
 <div class="well well-lg draft" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style= "margin-bottom: 5px" id="draft-<%=@final_draft.id%>"><%= @final_draft.content.html_safe %>
 </div>
 <div align="right">
 Word Count: <%= @final_draft.content.split.size %>
 </div>
+<% end %>
 
 <h4>List of my tags:</h4>
 <% if @tags.count > 0 %>
@@ -102,7 +106,7 @@ Word Count: <%= @final_draft.content.split.size %>
   <% end %>
 
 </div>
-  
+
 <h4>Comments</h4>
 
 <table class="table table-bordered">
