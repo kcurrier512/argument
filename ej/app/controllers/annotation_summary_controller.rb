@@ -26,8 +26,7 @@ class AnnotationSummaryController < ApplicationController
           end
           # only append comments that occurred for the specified assignment
           TeamAnnotation.where(user_id: user.id).order('created_at ASC').each do |t|
-            post = Post.find(t.post_id)
-            if post.assignment_id == @assignment.id
+            if t.assignment_id == @assignment.id
               team_annotations << t
             end
           end

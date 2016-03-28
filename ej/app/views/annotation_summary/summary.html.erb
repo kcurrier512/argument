@@ -14,7 +14,7 @@
         <% elsif a.is_a?(TeamAnnotation) %>
           wrote a comparison annotation for a team's posts at <%= a.created_at %></td>
           <td>Content: <%= a.content %></td>
-          <td><%= link_to 'Go to Comparison', analyze_path(a.post_id) %></td>
+          <td><%= link_to 'Go to Comparison', compare_path(a.assignment_id, a.group_id, Group.find(a.group_id).users.first, Group.find(a.group_id).users.first) %></td>
         <% elsif a.is_a?(Footnote) %>
           wrote a footnote for a post titled "<%= Post.find(Draft.find(a.draft_id).post_id).headline %>" at <%= a.created_at %></td>
           <td>Content: <%= a.content %></td>
