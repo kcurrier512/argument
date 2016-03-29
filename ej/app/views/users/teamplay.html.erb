@@ -29,7 +29,8 @@
              <%= a.name %>
              <!-- the ahoy event has a post id if its properties length is greater than 2 -->
              <% if a.properties.to_s.length > 2 %>
-               titled "<%= Post.find(a.properties.to_s.split('=>')[1]).headline %>" at <%=a.time%></td>
+             <% unless Post.find_by_id(a.properties.to_s.split('=>')[1]).nil? %>
+               titled "<%= Post.find_by_id(a.properties.to_s.split('=>')[1]).headline %>" at <%=a.time%></td>
                <td><%= link_to 'Go to Post', analyze_path(a.properties.to_s.split('=>')[1]) %></td>
              <% else %>
                at <%=a.time%></td>
@@ -40,16 +41,17 @@
              <td><%= link_to 'Go to Post', analyze_path(a.id) %></td>
            <!-- the activity item is a comment creation -->
            <% elsif a.is_a?(Comment) %>
-             commented on "<%= Post.find(a.post_id).headline %>" at <%= a.created_at %></td>
+             commented on "<%= Post.find_by_id(a.post_id).headline %>" at <%= a.created_at %></td>
              <td><%= link_to 'Go to Post', analyze_path(a.post_id) %></td>
            <!-- the activity item is liking a post -->
            <% elsif a.is_a?(Like) %>
-             liked "<%= Post.find(a.post_id).headline %>" at <%= a.created_at %></td>
+             liked "<%= Post.find_by_id(a.post_id).headline %>" at <%= a.created_at %></td>
              <td><%= link_to 'Go to Post', analyze_path(a.post_id) %></td>
            <!-- the activity item is a note creation -->
            <% elsif a.is_a?(Note) %>
-             wrote a note for "<%= Post.find(a.post_id).headline %>" at <%= a.created_at %></td>
+             wrote a note for "<%= Post.find_by_id(a.post_id).headline %>" at <%= a.created_at %></td>
              <td><%= link_to 'Go to Post', analyze_path(a.post_id) %></td>
+           <% end %>
            <% end %>
 
          <!-- embolden the current activity item -->

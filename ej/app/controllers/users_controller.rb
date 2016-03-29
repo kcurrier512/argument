@@ -158,6 +158,7 @@ class UsersController < ApplicationController
         # only append events that occurred for the specified assignment
         Ahoy::Event.where(user_id: user.id).order('time ASC').each do |event|
           if (event.properties.to_s.length > 2) # event has a post id if properties attribute length is greater than 2
+            unless Post.find_by_id(event.properties.to_s.split('=>')[1]).nil?
             post = Post.find(event.properties.to_s.split('=>')[1])
             if (post.assignment_id == @assignment.id)
               ahoy_events << event
@@ -165,6 +166,7 @@ class UsersController < ApplicationController
           else
             ahoy_events << event
           end
+        end
         end
         # only append comments that occurred for the specified assignment
         Comment.where(user_id: user.id).order('created_at ASC').each do |c|
@@ -289,7 +291,9 @@ class UsersController < ApplicationController
         @goposts << Post.find(@lowest.post_id)
       elsif @lowest.is_a?(Ahoy::Event)
         if @lowest.properties.to_s.length > 2
+          unless Post.find_by_id(@lowest.properties.to_s.split('=>')[1]).nil?
           @goposts << Post.find(@lowest.properties.to_s.split('=>')[1])
+          end
         else
           @goposts << nil
         end
