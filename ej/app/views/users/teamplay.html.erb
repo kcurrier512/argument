@@ -23,17 +23,19 @@
              <b>
            <% end %>
 
-           <% if current_user.admin %><%= a.user.name %><% else %><%= a.user.nickname %><% end %>
+           <%= index + 1 %>. <% if current_user.admin %><%= a.user.name %><% else %><%= a.user.nickname %><% end %>
            <!-- the activity item is an ahoy event -->
            <% if a.is_a?(Ahoy::Event) %>
              <%= a.name %>
              <!-- the ahoy event has a post id if its properties length is greater than 2 -->
              <% if a.properties.to_s.length > 2 %>
-             <% unless Post.find_by_id(a.properties.to_s.split('=>')[1]).nil? %>
-               titled "<%= Post.find_by_id(a.properties.to_s.split('=>')[1]).headline %>" at <%=a.time%></td>
-               <td><%= link_to 'Go to Post', analyze_path(a.properties.to_s.split('=>')[1]) %></td>
+               <% unless Post.find_by_id(a.properties.to_s.split('=>')[1]).nil? %>
+                 titled "<%= Post.find_by_id(a.properties.to_s.split('=>')[1]).headline %>" at <%=a.time%></td>
+                 <td><%= link_to 'Go to Post', analyze_path(a.properties.to_s.split('=>')[1]) %></td>
+               <% end %>
              <% else %>
                at <%=a.time%></td>
+               <td></td>
              <% end %>
            <!-- the activity item is a post creation -->
            <% elsif a.is_a?(Post) %>
@@ -51,7 +53,6 @@
            <% elsif a.is_a?(Note) %>
              wrote a note for "<%= Post.find_by_id(a.post_id).headline %>" at <%= a.created_at %></td>
              <td><%= link_to 'Go to Post', analyze_path(a.post_id) %></td>
-           <% end %>
            <% end %>
 
          <!-- embolden the current activity item -->

@@ -23,21 +23,26 @@
              <b>
            <% end %>
 
-           <% if current_user.admin %><%= @user.name %><% else %><%= @user.nickname %><% end %>
+           <%= index + 1 %>. <% if current_user.admin %><%= @user.name %><% else %><%= @user.nickname %><% end %>
            <!-- the activity item is an ahoy event -->
            <% if a.is_a?(Ahoy::Event) %>
              <%= a.name %>
              <!-- the ahoy event has a post id if its properties length is greater than 2 -->
              <% if a.properties.to_s.length > 2 %>
-               titled "<%= Post.find(a.properties.to_s.split('=>')[1]).headline %>" at <%=a.time%></td>
-               <td><%= link_to 'Go to Post', analyze_path(a.properties.to_s.split('=>')[1]) %></td>
+               <% unless Post.find_by_id(a.properties.to_s.split('=>')[1]).nil? %>
+                 titled "<%= Post.find(a.properties.to_s.split('=>')[1]).headline %>" at <%=a.time%></td>
+                 <td><%= link_to 'Go to Post', analyze_path(a.properties.to_s.split('=>')[1]) %></td>
+               <% end %>
              <% else %>
                at <%=a.time%></td>
+               <td></td>
              <% end %>
            <!-- the activity item is a post creation -->
            <% elsif a.is_a?(Post) %>
-             created a Post titled "<%= a.headline %>" at <%= a.created_at %></td>
-             <td><%= link_to 'Go to Post', analyze_path(a.id) %></td>
+             <% unless Post.find_by_id(a.id).nil? %>
+               created a Post titled "<%= a.headline %>" at <%= a.created_at %></td>
+               <td><%= link_to 'Go to Post', analyze_path(a.id) %></td>
+             <% end %>
            <!-- the activity item is a comment creation -->
            <% elsif a.is_a?(Comment) %>
              commented on "<%= Post.find(a.post_id).headline %>" at <%= a.created_at %></td>

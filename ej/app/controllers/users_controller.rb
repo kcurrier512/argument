@@ -7,7 +7,15 @@ class UsersController < ApplicationController
 
   def activity
     @groups = Group.all
-    @users = User.where(admin: false)
+    @users = []
+    users = User.where(admin: false)
+    time = Time.zone.parse('2016-03-01 21:00')
+    # only adds in users created before transcript analysis began: the "old" user accounts
+    users.each do |user|
+      unless user.created_at > time
+        @users << user
+      end
+    end
   end
 
   def _postsnap
@@ -34,10 +42,12 @@ class UsersController < ApplicationController
       @posts = Post.where(user_id: @user.id, assignment_id: @assignment.id).order('created_at ASC')
       # only append events that occurred for the specified assignment
       Ahoy::Event.where(user_id: @user.id).order('time ASC').each do |event|
-        if (event.properties.to_s.length > 2)
-          @post = Post.find(event.properties.to_s.split('=>')[1])
-          if (@post.assignment_id == @assignment.id)
-            @ahoy_events << event
+        if event.properties.to_s.length > 2
+          unless Post.find_by_id(event.properties.to_s.split('=>')).nil?
+            @post = Post.find(event.properties.to_s.split('=>')[1])
+            if (@post.assignment_id == @assignment.id)
+              @ahoy_events << event
+            end
           end
         else
           @ahoy_events << event
@@ -133,7 +143,6 @@ class UsersController < ApplicationController
 
   def teamplay
     @group = Group.find(params[:group_id])
-    @colors = ["dark red", "blue", "dark green", "black", "purple"]
     @all_activity = {}
     @overall_activity = []
     @goposts = []
@@ -159,14 +168,14 @@ class UsersController < ApplicationController
         Ahoy::Event.where(user_id: user.id).order('time ASC').each do |event|
           if (event.properties.to_s.length > 2) # event has a post id if properties attribute length is greater than 2
             unless Post.find_by_id(event.properties.to_s.split('=>')[1]).nil?
-            post = Post.find(event.properties.to_s.split('=>')[1])
-            if (post.assignment_id == @assignment.id)
-              ahoy_events << event
+              post = Post.find(event.properties.to_s.split('=>')[1])
+              if (post.assignment_id == @assignment.id)
+                ahoy_events << event
+              end
             end
           else
             ahoy_events << event
           end
-        end
         end
         # only append comments that occurred for the specified assignment
         Comment.where(user_id: user.id).order('created_at ASC').each do |c|
@@ -310,6 +319,10 @@ class UsersController < ApplicationController
     end
 
     @gopost = @goposts[@i.to_i]
+  end
+
+  def user_params
+    params.require(:user).permit(:name, :nickname, :email)
   end
 
 end
