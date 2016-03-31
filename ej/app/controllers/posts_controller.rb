@@ -33,12 +33,14 @@ class PostsController < ApplicationController
       @final_draft=Draft.where(post_id:@post.id,title:"final draft", user_id:current_user.id).first
     end
 
-    @pair=Pair.find(PairMembership.where(user_id: current_user.id).first.pair_id)
+    if !PairMembership.where(user_id: current_user.id).first.nil?
+      @pair=Pair.find(PairMembership.where(user_id: current_user.id).first.pair_id)
 
-    @pair_members=@pair.users
+      @pair_members=@pair.users
 
-    @tags = @first_draft.tag_list.to_a + @final_draft.tag_list.to_a
-    @tags=@tags.uniq
+      @tags = @first_draft.tag_list.to_a + @final_draft.tag_list.to_a
+      @tags=@tags.uniq
+    end
   end
 
   def annotate
