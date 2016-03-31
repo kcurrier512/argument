@@ -29,7 +29,7 @@
   <h4>Likes: <%= @gopost.likes.count %></h4>
   <h4>Notes:</h4>
   <% if @gopost.notes.where(:user_id => @user.id).exists? %>
-    <div class="well well-sm"><%= @gopost.notes.where(:user_id => @user.id).exists? %></div>
+    <div class="well well-sm"><%= @gopost.notes.where(:user_id => @user.id).first.content %></div>
   <% else %>
     User did not make notes on this post.
   <% end %>

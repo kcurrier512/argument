@@ -1,3 +1,4 @@
+<% if !current_user.nil? %>
 <% render_navigation :expand_all => true, :renderer => :bootstrap %>
 <div class="sidebar-nav">
 <%= render_navigation do |primary|%>
@@ -21,3 +22,4 @@
   <% end %>
 <% end %>
 </div>
+<% end %>

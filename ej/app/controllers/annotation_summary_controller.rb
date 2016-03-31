@@ -1,6 +1,7 @@
 class AnnotationSummaryController < ApplicationController
 
   def index
+    
   end
 
   def summary

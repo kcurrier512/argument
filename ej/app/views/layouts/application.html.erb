@@ -20,7 +20,9 @@
             <div class="container-fluid">
 
 
-<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Navigate</a>
+<% if !current_user.nil? %>
+  <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Navigate</a>
+<% end %>
 <div style="margin: 50px">
 
 <%= yield %>
