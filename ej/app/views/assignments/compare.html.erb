@@ -82,7 +82,7 @@
       </div>
       <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
     <% end %>
-    <div class="draft well well-lg" id="draft-<%=@first_drafts[i].id%>"><%= @first_drafts[i].content.html_safe %></div>
+    <div class="well well-lg" ><pre class="draft" id="draft-<%=@first_drafts[i].id%>"><%= Sanitize.fragment(@first_drafts[i].content,:elements=>[""]).gsub("&nbsp;"," ") %></pre></div>
 
         <h4>Final Draft</h4>
         <%= form_for(@final_drafts[i], :html=>{:class=>'form-inline'}) do |f| %>
@@ -114,7 +114,7 @@
         </div>
         <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
     <% end %>
-        <div class="draft well well-lg" id="draft-<%=@final_drafts[i].id%>"><%= @final_drafts[i].content.html_safe %></div>
+        <div class="well well-lg" ><pre class="draft" id="draft-<%=@final_drafts[i].id%>"><%= Sanitize.fragment(@final_drafts[i].content,:elements=>[""]).gsub("&nbsp;"," ") %></pre></div>
 
 
 

@@ -47,7 +47,7 @@
   <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
 <% end %>
 <% if !@first_draft.content.nil? %>
-<div class="well well-lg" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style= "margin-bottom: 5px" ><pre id="draft-<%=@first_draft.id%>" class="draft"><%= Sanitize.fragment(@first_draft.content.html_safe,:elements=>[""]).gsub("&nbsp;"," ") %></pre>
+<div class="well well-lg" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style= "margin-bottom: 5px" ><pre id="draft-<%=@first_draft.id%>" class="draft"><%= Sanitize.fragment(@first_draft.content,:elements=>[""]).gsub("&nbsp;"," ") %></pre>
 </div>
 <div align="right">
   Word Count: <%= @first_draft.content.split.size %>
@@ -79,7 +79,7 @@
 <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
 <% end %>
 <% if !@final_draft.content.nil? %>
-<div class="well well-lg" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style= "margin-bottom: 5px" id="draft-<%=@final_draft.id%>"><pre id="draft-<%=@final_draft.id%>" class="draft"><%= Sanitize.fragment(@final_draft.content.html_safe,:elements=>[""]).gsub("&nbsp;"," ") %></pre>
+<div class="well well-lg" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style= "margin-bottom: 5px" ><pre id="draft-<%=@final_draft.id%>" class="draft"><%= Sanitize.fragment(@final_draft.content,:elements=>[""]).gsub("&nbsp;"," ") %></pre>
 </div>
 <div align="right">
 Word Count: <%= @final_draft.content.split.size %>
