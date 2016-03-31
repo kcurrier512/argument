@@ -7,7 +7,7 @@
   <% @overall_activity.each do |a| %>
     <tr>
       <td>
-        <%= index %>. <% if current_user.admin %><%= a.user.name %><% else %><%= a.user.nickname %><% end %>
+        <%= index %>. <%= a.user.name %> 
         <% if a.is_a?(Annotation) %>
           wrote an annotation on a post titled "<%= Post.find(a.post_id).headline %>" at <%= a.created_at %></td>
           <td>Content: <%= a.content %></td>

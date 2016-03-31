@@ -16,12 +16,12 @@ class PairsController < ApplicationController
   # GET /pairs/new
   def new
     @pair = Pair.new
-    @users = User.where(admin: false)
+    @users = User.all
   end
 
   # GET /pairs/1/edit
   def edit
-    @users = User.where(admin: false)
+    @users = User.all
   end
 
   # POST /pairs

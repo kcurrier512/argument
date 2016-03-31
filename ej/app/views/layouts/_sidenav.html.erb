@@ -8,7 +8,11 @@
           <% group.users.each do |user| %>
             <% @post = user.posts.where(assignment_id: assignment.id).first %>
             <% if !@post.nil? %>
-              <% post_nav.item :post, @post.headline, analyze_path(@post.id), highlights_on: %r(/) %>
+              <% if @post.headline.empty? %>
+                <% post_nav.item :post, "#{@post.user.nickname}'s Post", analyze_path(@post.id), highlights_on: %r(/) %>
+              <% else %>
+                <% post_nav.item :post, @post.headline, analyze_path(@post.id), highlights_on: %r(/) %>
+              <% end %>
             <% end %>
           <% end %>
         <% end %>
