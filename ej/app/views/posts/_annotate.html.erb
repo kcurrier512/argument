@@ -15,7 +15,6 @@
 @first_draft_footnotes=Footnote.where(:draft_id => @pair_first_drafts.pluck(:id)).order(:location)
 @final_draft_footnotes=Footnote.where(draft_id: @pair_final_drafts.pluck(:id)).order(:location)
 
-
 %>
 
 
@@ -36,6 +35,16 @@
       <%=f.submit "Save Note" %>
     <%end%>
 <% end %>
+  <div class="partner_notes">
+      <% @pair_members.each do |member| %>
+        <% if member.id!=current_user.id %>
+          <% if @post.annotations.where(:user_id => member).exists? %>
+               <h4><%=member.name%>'s Notes</h4>
+            <%=@post.annotations.where(:user_id => member).first.content %>
+          <%end%>
+        <%end%>
+    <%end%>
+  </div>
 
   <h2>Footnotes</h2>
   <ul id='member-list' class='list-unstyled'>
@@ -135,11 +144,13 @@ function show_my_tags(){
 function show_all_annotations(){
   show_all_footnotes();
   show_all_tags();
+  $('.partner_notes').show();
 }
 
 function show_my_annotations(){
   show_my_footnotes();
   show_my_tags();
+  $('.partner_notes').hide();
 }
 
 function list_members(target,members,after){
@@ -218,3 +229,4 @@ $(function(){
 
 
 </script>
+</div>
