@@ -1,7 +1,7 @@
 <div class="container">
 <div class="page-header">
- <h1>Team <%= @group.id %> - <%= @assignment.title %></h1>
- <p>Members to compare:
+ <h1>Group <%= @group.id %> - <%= @assignment.title %></h1>
+ <p>Group members to compare:
 
  <script type='text/javascript'>
  $(function(){
@@ -29,7 +29,7 @@
     <% end %>
   </select>
  </p>
- <label> <input type='checkbox' id='show-all-annotations'> Show tags and footnotes for whole team</label>
+ <label> <input type='checkbox' id='show-all-annotations'> Show tags and footnotes for your analysis pair</label>
 </div>
 <div class='row'>
 
@@ -76,7 +76,7 @@
       <%= hidden_field_tag :member1, @members[0].id%>
       <%= hidden_field_tag :member2, @members[1].id%>
       <%= hidden_field_tag :group, @group.id%>
-      <%#= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@first_drafts[i].tag_list.join(", ") 
+      <%#= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@first_drafts[i].tag_list.join(", ")
       %>
       <%= f.text_field :tag_list, :value=>@first_drafts[i].tag_list.join(", ")  %>
       </div>
@@ -108,7 +108,7 @@
       <%= hidden_field_tag :member1, @members[0].id%>
       <%= hidden_field_tag :member2, @members[1].id%>
       <%= hidden_field_tag :group, @group.id%>
-        <%#= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@final_drafts[i].tag_list.join(", ") 
+        <%#= f.autocomplete_field :tag_list, autocomplete_tag_name_drafts_path, :"data-delimiter" => ', ', :value=>@final_drafts[i].tag_list.join(", ")
         %>
         <%= f.text_field :tag_list, :value=>@final_drafts[i].tag_list.join(", ") %>
         </div>
@@ -282,10 +282,10 @@ function list_members(target,members,after){
 }
 
 function setCookie(c_name, value, exdays) {
-    var exdate = new Date();  
-    exdate.setDate( exdate.getDate() + exdays );  
-    var c_value = escape( value ) + ( ( exdays == null ) ? "" : "; expires=" + exdate.toUTCString() );  
-    document.cookie = c_name + "=" + c_value + "; path=/"; 
+    var exdate = new Date();
+    exdate.setDate( exdate.getDate() + exdays );
+    var c_value = escape( value ) + ( ( exdays == null ) ? "" : "; expires=" + exdate.toUTCString() );
+    document.cookie = c_name + "=" + c_value + "; path=/";
 }
 
 function getCookie(cname) {
@@ -320,7 +320,7 @@ $(function(){
   else{
     show_my_annotations();
   }
-  
+
 
   $('#show-all-annotations').change(function(){
     if($(this).is(':checked')){

@@ -63,7 +63,7 @@
   <a href="javascript: window.open('<%= diff_path(@post.id) %>', 'Diff Function', 'height=500, width=700')" class="btn btn-warning">Diff Function</a>
   <button class="btn btn-warning" onclick="window.print()">Print</button>
   <% unless Membership.where(user_id: @post.user.id).first.nil? %>
-    <%= button_to 'Compare Team', compare_path(:assignment_id => @post.assignment.id, :group_id => Membership.where(user_id: @post.user.id).first.group_id, :member1 => @post.user, :member2 => @post.user), class: 'btn btn-warning' %>
+    <%= button_to 'Compare Group', compare_path(:assignment_id => @post.assignment.id, :group_id => Membership.where(user_id: @post.user.id).first.group_id, :member1 => @post.user, :member2 => @post.user), class: 'btn btn-warning' %>
   <% end %>
 
 <script type="text/javascript">
@@ -151,10 +151,10 @@ function list_members(target,members,after){
 }
 
 function setCookie(c_name, value, exdays) {
-    var exdate = new Date();  
-    exdate.setDate( exdate.getDate() + exdays );  
-    var c_value = escape( value ) + ( ( exdays == null ) ? "" : "; expires=" + exdate.toUTCString() );  
-    document.cookie = c_name + "=" + c_value + "; path=/"; 
+    var exdate = new Date();
+    exdate.setDate( exdate.getDate() + exdays );
+    var c_value = escape( value ) + ( ( exdays == null ) ? "" : "; expires=" + exdate.toUTCString() );
+    document.cookie = c_name + "=" + c_value + "; path=/";
 }
 
 function getCookie(cname) {
@@ -184,7 +184,7 @@ $(function(){
   else{
     show_my_annotations();
   }
-  
+
 
   $('#show-all-annotations').change(function(){
     if($(this).is(':checked')){
