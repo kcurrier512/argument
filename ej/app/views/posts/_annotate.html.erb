@@ -213,6 +213,7 @@ $(function(){
     $("#footnote_message").html("Click footnote position");
     $(".draft").attr("contenteditable", "true").click(function(){
         loc = $(this).caret();
+        console.log(loc);
         draft = $(this).attr("id").replace("draft-", "");
         $(this).unbind("click").removeAttr("contenteditable");
         $("#new_footnote_button").hide();
