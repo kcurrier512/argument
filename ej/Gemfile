@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 #for tracking ordered rows
 gem 'ranked-model'
-
+gem 'sanitize'
 gem 'nested_form_fields'
 gem 'time_diff', '~> 0.3.0'
 gem 'paperclip', '~> 4.3', '>= 4.3.1'

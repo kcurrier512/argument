@@ -1,3 +1,4 @@
+<% require 'sanitize' %>
 <% if PairMembership.where(user_id: current_user.id).first.nil? %>
   You do not belong to a pair, so you do not have access to this area. Please contact the site administrators to be placed into a pair.
 <% else %>
@@ -46,7 +47,7 @@
   <input type='submit' class='btn btn-primary btn-sm' value='save tags'>
 <% end %>
 <% if !@first_draft.content.nil? %>
-<div class="well well-lg draft" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style= "margin-bottom: 5px" id="draft-<%=@first_draft.id%>"><%= @first_draft.content.html_safe %>
+<div class="well well-lg" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style= "margin-bottom: 5px" ><pre id="draft-<%=@first_draft.id%>" class="draft"><%= Sanitize.fragment(@first_draft.content.html_safe, Sanitize::Config::RESTRICTED) %></pre>
 </div>
 <div align="right">
   Word Count: <%= @first_draft.content.split.size %>
