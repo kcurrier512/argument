@@ -97,9 +97,14 @@ function add_footnotes_to_text(footnotes_list, draft_id){
 function list_footnotes_in_container(container, footnotes_list){
   var current_footnote;
   container.append("<ol></ol>");
+  
+  
   for(var i=0; i<footnotes_list.length; i++){
     current_footnote=footnotes_list[i];
-    container.children('ol').first().append("<li value='"+(i+1)+"' style='color:"+pair_member_by_id(pair_members,current_footnote.user_id).color+"' class='footnote footnote-user-"+current_footnote.user_id+"'>"+current_footnote.content+"</li>");
+    console.log(current_footnote.id);
+    var delete_button=' <a class="btn btn-xs btn-danger" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/footnotes/'+(current_footnote.id)+'">x</a>';
+    
+    container.children('ol').first().append("<li value='"+(i+1)+"' style='color:"+pair_member_by_id(pair_members,current_footnote.user_id).color+"' class='footnote footnote-user-"+current_footnote.user_id+"'>"+current_footnote.content+delete_button+"</li>");
   }
 }
 var first_draft_footnotes = <%=@first_draft_footnotes.to_json(:only => [:id, :location, :content, :user_id]).html_safe %>;
