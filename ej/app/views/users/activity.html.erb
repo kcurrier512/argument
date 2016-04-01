@@ -4,11 +4,11 @@
 </head>
 <body>
 <div class="panel panel-default">
-  <div class="panel-heading"><h1 align="center">Team Activity</h1></div>
+  <div class="panel-heading"><h1 align="center">Group Activity</h1></div>
 <table class="table" align="center">
   <thead>
     <tr>
-        <td><h3>Team Name</h3></td>
+        <td><h3>Group Name</h3></td>
         <td><h3>Assignment 1</h3></td>
         <td><h3>Assignment 2</h3></td>
         <td><h3>Assignment 3</h3></td>
@@ -20,7 +20,7 @@
     <% @groups.each do |group| %>
 
       <tr>
-        <td>Team <%= group.id %></td>
+        <td>Group <%= group.id %></td>
         <td><%= link_to "View Activity", :controller => "users", :action =>"teamplay", :group_id => group.id, :assignment_id => 1 %></td>
         <td><%= link_to "View Activity", :controller => "users", :action =>"teamplay", :group_id => group.id, :assignment_id => 2 %></td>
         <td><%= link_to "View Activity", :controller => "users", :action =>"teamplay", :group_id => group.id, :assignment_id => 3 %></td>
