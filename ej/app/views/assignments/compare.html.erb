@@ -1,6 +1,10 @@
-<% if PairMembership.where(user_id: current_user.id).first.nil? %>
+<%@pair=Pair.find(PairMembership.where(user_id: current_user.id).first.pair_id)
+
+@pair_members=@pair.users
+ if PairMembership.where(user_id: current_user.id).first.nil? %>
   You do not belong to a pair, so you do not have access to this area. Please contact the site administrators to be placed into a pair.
 <% else %>
+
 <div class="container">
 <div class="page-header">
  <h1>Group <%= @group.id %> - <%= @assignment.title %></h1>
@@ -166,7 +170,18 @@
       <%= hidden_field_tag :member2, @members[1].id%><br>
       <%=f.submit "Save Note" %>
     <%end%>
+
 <% end %>
+    <div class="partner_notes">
+      <% @pair_members.each do |member| %>
+          <% if member.id!=current_user.id %>
+              <% if @assignment.team_annotations.where(:user_id => member).exists? %>
+                  <h4><%=member.name%>'s Notes</h4>
+                  <%=@assignment.team_annotations.where(:user_id => member).first.content %>
+              <%end%>
+          <%end%>
+      <%end%>
+    </div>
 </div>
 <div class="col-md-3">
 <h2>Footnotes</h2>
@@ -269,11 +284,13 @@ function show_my_tags(){
 function show_all_annotations(){
   show_all_footnotes();
   show_all_tags();
+  $('.partner_notes').show();
 }
 
 function show_my_annotations(){
   show_my_footnotes();
   show_my_tags();
+  $('.partner_notes').hide();
 }
 
 function list_members(target,members,after){
